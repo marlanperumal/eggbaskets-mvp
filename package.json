@@ -1,5 +1,5 @@
 {
-  "name": "eggbaskets-mvp",
+  "name": "eggbaskets-mvp-2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,12 +12,20 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.0",
+    "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-router": "^1.114.3",
     "@tanstack/react-router-devtools": "^1.114.3",
     "@tanstack/router-plugin": "^1.114.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "convex": "^1.23.0",
+    "lucide-react": "^0.476.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.6",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
@@ -31,5 +39,13 @@
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
     "web-vitals": "^4.2.4"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }

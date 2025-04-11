@@ -2,12 +2,12 @@
   "framework": "react",
   "projectName": "eggbaskets-mvp",
   "typescript": true,
-  "tailwind": false,
+  "tailwind": true,
   "packageManager": "pnpm",
   "toolchain": "none",
   "mode": "file-router",
   "git": true,
   "variableValues": {},
   "version": 1,
-  "existingAddOns": []
+  "existingAddOns": ["shadcn"]
 }
