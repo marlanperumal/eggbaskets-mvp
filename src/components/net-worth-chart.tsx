@@ -1,4 +1,12 @@
-import { Area, XAxis, YAxis, AreaChart, Line } from "recharts";
+import {
+  Area,
+  XAxis,
+  YAxis,
+  AreaChart,
+  Line,
+  ComposedChart,
+  Legend,
+} from "recharts";
 import { useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,8 +23,8 @@ export function NetWorthChart() {
       label: "Liabilities",
       color: "hsl(0 84.2% 60.2%)",
     },
-    npv: {
-      label: "Net Present Value",
+    netWorth: {
+      label: "Net Worth",
       color: "hsl(142.1 76.2% 36.3%)", // Green color for NPV
     },
   } satisfies ChartConfig;
@@ -43,11 +51,22 @@ export function NetWorthChart() {
       ) {
         // Calculate years of compound interest
         const yearsOfInterest = year - asset.startYear;
-        // Calculate compound interest: P * (1 + r)^t
-        const amount =
+
+        // Calculate compound interest on principal: P * (1 + r)^t
+        const principalWithInterest =
           asset.principalAmount *
           Math.pow(1 + asset.interestRate / 100, yearsOfInterest);
-        return acc + amount;
+
+        // Calculate compound interest on annual contributions if they exist
+        // Formula: C * ((1 + r)^t - 1) / r
+        // where C is annual contribution, r is interest rate, t is years
+        const annualContributionWithInterest = asset.annualContribution
+          ? asset.annualContribution *
+            ((Math.pow(1 + asset.interestRate / 100, yearsOfInterest) - 1) /
+              (asset.interestRate / 100))
+          : 0;
+
+        return acc + principalWithInterest + annualContributionWithInterest;
       }
       return acc;
     }, 0);
@@ -58,11 +77,23 @@ export function NetWorthChart() {
       ) {
         // Calculate years of compound interest
         const yearsOfInterest = year - liability.startYear;
-        // Calculate compound interest: P * (1 + r)^t
-        const amount =
+
+        // Calculate compound interest on principal: P * (1 + r)^t
+        const principalWithInterest =
           liability.principalAmount *
           Math.pow(1 + liability.interestRate / 100, yearsOfInterest);
-        return acc - amount; // Negative because it's a liability
+
+        // Calculate compound interest reduction from annual repayments if they exist
+        // Formula: C * ((1 + r)^t - 1) / r
+        // where C is annual repayment, r is interest rate, t is years
+        const annualRepaymentWithInterest = liability.annualRepayment
+          ? liability.annualRepayment *
+            ((Math.pow(1 + liability.interestRate / 100, yearsOfInterest) - 1) /
+              (liability.interestRate / 100))
+          : 0;
+
+        // Negative because it's a liability, and repayments reduce the liability
+        return acc - (principalWithInterest - annualRepaymentWithInterest);
       }
       return -acc;
     }, 0);
@@ -87,7 +118,7 @@ export function NetWorthChart() {
       </CardHeader>
       <CardContent>
         <ChartContainer config={config} className="h-[150px] w-full">
-          <AreaChart data={netWorthData}>
+          <ComposedChart data={netWorthData}>
             <XAxis
               dataKey="date"
               type="number"
@@ -108,12 +139,15 @@ export function NetWorthChart() {
               stroke="var(--color-liabilities)"
             />
             <Line
-              dataKey="npv"
-              fill="var(--color-npv)"
-              stroke="var(--color-npv)"
-              type="monotone"
+              dataKey="netWorth"
+              fill="var(--color-netWorth)"
+              stroke="var(--color-netWorth)"
+              strokeWidth={3}
+              type="natural"
+              dot={false}
             />
-          </AreaChart>
+            <Legend />
+          </ComposedChart>
         </ChartContainer>
       </CardContent>
     </Card>
