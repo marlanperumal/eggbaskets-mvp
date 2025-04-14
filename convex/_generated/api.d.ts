@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as assets from "../assets.js";
+import type * as liabilities from "../liabilities.js";
 import type * as netWorth from "../netWorth.js";
 
 /**
@@ -26,6 +27,7 @@ import type * as netWorth from "../netWorth.js";
  */
 declare const fullApi: ApiFromModules<{
   assets: typeof assets;
+  liabilities: typeof liabilities;
   netWorth: typeof netWorth;
 }>;
 export declare const api: FilterApi<

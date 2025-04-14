@@ -33,7 +33,7 @@ import {
 import { useMutation } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 
-const assetSchema = z.object({
+const liabilitySchema = z.object({
   name: z.string(),
   type: z.string(),
   startDate: z.string(),
@@ -42,11 +42,11 @@ const assetSchema = z.object({
   interestRate: z.coerce.number(),
 });
 
-export function NewAssetDialog() {
+export function NewLiabilityDialog() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const newAssetForm = useForm<z.infer<typeof assetSchema>>({
-    resolver: zodResolver(assetSchema),
+  const newLiabilityForm = useForm<z.infer<typeof liabilitySchema>>({
+    resolver: zodResolver(liabilitySchema),
     defaultValues: {
       name: "",
       type: "",
@@ -57,10 +57,10 @@ export function NewAssetDialog() {
     },
   });
 
-  const addAsset = useMutation(api.assets.addAsset);
+  const addLiability = useMutation(api.liabilities.addLiability);
 
-  function onSubmitAsset(data: z.infer<typeof assetSchema>) {
-    addAsset({
+  function onSubmitLiability(data: z.infer<typeof liabilitySchema>) {
+    addLiability({
       name: data.name,
       type: data.type,
       startDate: data.startDate,
@@ -79,20 +79,20 @@ export function NewAssetDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <Form {...newAssetForm}>
+        <Form {...newLiabilityForm}>
           <form
-            onSubmit={newAssetForm.handleSubmit(onSubmitAsset)}
+            onSubmit={newLiabilityForm.handleSubmit(onSubmitLiability)}
             className="space-y-4"
           >
             <DialogHeader>
-              <DialogTitle>Add Asset</DialogTitle>
+              <DialogTitle>Add Liability</DialogTitle>
             </DialogHeader>
             <DialogDescription>
-              Add a new asset to your balance sheet.
+              Add a new liability to your balance sheet.
             </DialogDescription>
 
             <FormField
-              control={newAssetForm.control}
+              control={newLiabilityForm.control}
               name="type"
               render={({ field }) => (
                 <FormItem>
@@ -108,8 +108,7 @@ export function NewAssetDialog() {
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="current">Current</SelectItem>
-                      <SelectItem value="fixed">Fixed</SelectItem>
-                      <SelectItem value="investment">Investment</SelectItem>
+                      <SelectItem value="loan">Loan</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -117,7 +116,7 @@ export function NewAssetDialog() {
               )}
             />
             <FormField
-              control={newAssetForm.control}
+              control={newLiabilityForm.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -130,7 +129,7 @@ export function NewAssetDialog() {
               )}
             />
             <FormField
-              control={newAssetForm.control}
+              control={newLiabilityForm.control}
               name="principalAmount"
               render={({ field }) => (
                 <FormItem>
@@ -148,7 +147,7 @@ export function NewAssetDialog() {
               )}
             />
             <FormField
-              control={newAssetForm.control}
+              control={newLiabilityForm.control}
               name="interestRate"
               render={({ field }) => (
                 <FormItem>
@@ -162,7 +161,7 @@ export function NewAssetDialog() {
             />
             <div className="flex flex-row gap-2 justify-between">
               <FormField
-                control={newAssetForm.control}
+                control={newLiabilityForm.control}
                 name="startDate"
                 render={({ field }) => (
                   <FormItem>
@@ -175,7 +174,7 @@ export function NewAssetDialog() {
                 )}
               />
               <FormField
-                control={newAssetForm.control}
+                control={newLiabilityForm.control}
                 name="endDate"
                 render={({ field }) => (
                   <FormItem>
@@ -194,7 +193,7 @@ export function NewAssetDialog() {
                   Cancel
                 </Button>
               </DialogClose>
-              <Button type="submit">Add Asset</Button>
+              <Button type="submit">Add Liability</Button>
             </DialogFooter>
           </form>
         </Form>
