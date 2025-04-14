@@ -28,6 +28,8 @@ export function LiabilitiesTable() {
         <TableRow>
           <TableHead>Type</TableHead>
           <TableHead>Name</TableHead>
+          <TableHead>Start Year</TableHead>
+          <TableHead>End Year</TableHead>
           <TableHead className="text-right">Principal</TableHead>
           <TableHead className="text-right">
             <Button variant="ghost" size="icon">
@@ -41,6 +43,8 @@ export function LiabilitiesTable() {
           <TableRow key={liability._id}>
             <TableCell>{liability.type}</TableCell>
             <TableCell>{liability.name}</TableCell>
+            <TableCell>{liability.startYear}</TableCell>
+            <TableCell>{liability.endYear}</TableCell>
             <TableCell className="text-right">
               {new Intl.NumberFormat("en-ZA", {
                 style: "currency",

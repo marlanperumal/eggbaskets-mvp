@@ -28,6 +28,8 @@ export function AssetsTable() {
         <TableRow>
           <TableHead>Type</TableHead>
           <TableHead>Name</TableHead>
+          <TableHead>Start Year</TableHead>
+          <TableHead>End Year</TableHead>
           <TableHead className="text-right">Principal</TableHead>
           <TableHead className="text-right">
             <Button variant="ghost" size="icon">
@@ -41,6 +43,8 @@ export function AssetsTable() {
           <TableRow key={asset._id}>
             <TableCell>{asset.type}</TableCell>
             <TableCell>{asset.name}</TableCell>
+            <TableCell>{asset.startYear}</TableCell>
+            <TableCell>{asset.endYear}</TableCell>
             <TableCell className="text-right">
               {new Intl.NumberFormat("en-ZA", {
                 style: "currency",

@@ -12,8 +12,8 @@ export const addLiability = mutation({
   args: {
     name: v.string(),
     type: v.string(),
-    startDate: v.string(),
-    endDate: v.optional(v.string()),
+    startYear: v.number(),
+    endYear: v.optional(v.number()),
     principalAmount: v.number(),
     interestRate: v.number(),
   },

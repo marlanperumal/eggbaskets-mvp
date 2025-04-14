@@ -36,8 +36,8 @@ import { api } from "@/../convex/_generated/api";
 const liabilitySchema = z.object({
   name: z.string(),
   type: z.string(),
-  startDate: z.string(),
-  endDate: z.string().optional(),
+  startYear: z.coerce.number(),
+  endYear: z.coerce.number().optional(),
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
 });
@@ -49,9 +49,9 @@ export function NewLiabilityDialog() {
     resolver: zodResolver(liabilitySchema),
     defaultValues: {
       name: "",
-      type: "",
-      startDate: new Date().toISOString(),
-      endDate: undefined,
+      type: "current",
+      startYear: new Date().getFullYear(),
+      endYear: undefined,
       principalAmount: 0,
       interestRate: 0,
     },
@@ -63,12 +63,13 @@ export function NewLiabilityDialog() {
     addLiability({
       name: data.name,
       type: data.type,
-      startDate: data.startDate,
-      endDate: data.endDate,
+      startYear: data.startYear,
+      endYear: data.endYear,
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
     });
     setIsOpen(false);
+    newLiabilityForm.reset();
   }
 
   return (
@@ -162,12 +163,12 @@ export function NewLiabilityDialog() {
             <div className="flex flex-row gap-2 justify-between">
               <FormField
                 control={newLiabilityForm.control}
-                name="startDate"
+                name="startYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Start Date</FormLabel>
+                    <FormLabel>Start Year</FormLabel>
                     <FormControl>
-                      <Input {...field} type="date" />
+                      <Input {...field} type="number" min={2025} max={2300} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -175,12 +176,12 @@ export function NewLiabilityDialog() {
               />
               <FormField
                 control={newLiabilityForm.control}
-                name="endDate"
+                name="endYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>End Year</FormLabel>
                     <FormControl>
-                      <Input {...field} type="date" />
+                      <Input {...field} type="number" min={2025} max={2300} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

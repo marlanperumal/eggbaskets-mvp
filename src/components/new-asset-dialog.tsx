@@ -32,12 +32,13 @@ import {
 } from "@/components/ui/select";
 import { useMutation } from "convex/react";
 import { api } from "@/../convex/_generated/api";
+import { Label } from "@/components/ui/label";
 
 const assetSchema = z.object({
   name: z.string(),
   type: z.string(),
-  startDate: z.string(),
-  endDate: z.string().optional(),
+  startYear: z.coerce.number(),
+  endYear: z.coerce.number().optional(),
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
 });
@@ -49,9 +50,9 @@ export function NewAssetDialog() {
     resolver: zodResolver(assetSchema),
     defaultValues: {
       name: "",
-      type: "",
-      startDate: new Date().toISOString(),
-      endDate: undefined,
+      type: "current",
+      startYear: new Date().getFullYear(),
+      endYear: undefined,
       principalAmount: 0,
       interestRate: 0,
     },
@@ -63,12 +64,13 @@ export function NewAssetDialog() {
     addAsset({
       name: data.name,
       type: data.type,
-      startDate: data.startDate,
-      endDate: data.endDate,
+      startYear: data.startYear,
+      endYear: data.endYear,
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
     });
     setIsOpen(false);
+    newAssetForm.reset();
   }
 
   return (
@@ -135,14 +137,18 @@ export function NewAssetDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Principal Amount</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="number"
-                      step="10000"
-                      placeholder="Initial value in ZAR"
-                    />
-                  </FormControl>
+                  <div className="flex flex-row gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        step="10000"
+                        placeholder="Initial value in ZAR"
+                        className="text-right w-36"
+                      />
+                    </FormControl>
+                    <Label className="w-12">ZAR</Label>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -153,9 +159,17 @@ export function NewAssetDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Interest Rate</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" step="0.1" />
-                  </FormControl>
+                  <div className="flex flex-row gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        step="0.1"
+                        className="text-right w-36"
+                      />
+                    </FormControl>
+                    <Label className="w-12">%</Label>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -163,12 +177,12 @@ export function NewAssetDialog() {
             <div className="flex flex-row gap-2 justify-between">
               <FormField
                 control={newAssetForm.control}
-                name="startDate"
+                name="startYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Start Date</FormLabel>
+                    <FormLabel>Start Year</FormLabel>
                     <FormControl>
-                      <Input {...field} type="date" />
+                      <Input {...field} type="number" min={2025} max={2300} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -176,12 +190,12 @@ export function NewAssetDialog() {
               />
               <FormField
                 control={newAssetForm.control}
-                name="endDate"
+                name="endYear"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>End Year</FormLabel>
                     <FormControl>
-                      <Input {...field} type="date" />
+                      <Input {...field} type="number" min={2025} max={2300} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
