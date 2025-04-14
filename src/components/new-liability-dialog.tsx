@@ -40,6 +40,7 @@ const liabilitySchema = z.object({
   endYear: z.coerce.number().optional(),
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
+  annualRepayment: z.coerce.number().optional(),
 });
 
 export function NewLiabilityDialog() {
@@ -54,6 +55,7 @@ export function NewLiabilityDialog() {
       endYear: undefined,
       principalAmount: 0,
       interestRate: 0,
+      annualRepayment: 0,
     },
   });
 
@@ -67,6 +69,7 @@ export function NewLiabilityDialog() {
       endYear: data.endYear,
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
+      annualRepayment: data.annualRepayment,
     });
     setIsOpen(false);
     newLiabilityForm.reset();
@@ -155,6 +158,24 @@ export function NewLiabilityDialog() {
                   <FormLabel>Interest Rate</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" step="0.1" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={newLiabilityForm.control}
+              name="annualRepayment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual Repayment</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      step="10000"
+                      placeholder="Annual repayment in ZAR"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

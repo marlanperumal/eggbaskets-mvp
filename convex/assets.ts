@@ -8,6 +8,15 @@ export const getAssets = query({
   },
 });
 
+export const getAsset = query({
+  args: {
+    id: v.id("asset"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});
+
 export const addAsset = mutation({
   args: {
     name: v.string(),
@@ -16,6 +25,7 @@ export const addAsset = mutation({
     endYear: v.optional(v.number()),
     principalAmount: v.number(),
     interestRate: v.number(),
+    annualContribution: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const id = await ctx.db.insert("asset", args);
@@ -29,5 +39,29 @@ export const deleteAsset = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.id);
+  },
+});
+
+export const updateAsset = mutation({
+  args: {
+    id: v.id("asset"),
+    name: v.optional(v.string()),
+    type: v.optional(v.string()),
+    startYear: v.optional(v.number()),
+    endYear: v.optional(v.number()),
+    principalAmount: v.optional(v.number()),
+    interestRate: v.optional(v.number()),
+    annualContribution: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, {
+      name: args.name,
+      type: args.type,
+      startYear: args.startYear,
+      endYear: args.endYear,
+      principalAmount: args.principalAmount,
+      interestRate: args.interestRate,
+      annualContribution: args.annualContribution,
+    });
   },
 });

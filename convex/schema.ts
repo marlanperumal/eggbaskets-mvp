@@ -14,6 +14,7 @@ export default defineSchema({
     endYear: v.optional(v.number()),
     principalAmount: v.number(),
     interestRate: v.number(),
+    annualContribution: v.optional(v.number()),
   }),
   liability: defineTable({
     name: v.string(),
@@ -22,5 +23,6 @@ export default defineSchema({
     endYear: v.optional(v.number()),
     principalAmount: v.number(),
     interestRate: v.number(),
+    annualRepayment: v.optional(v.number()),
   }),
 });

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { EllipsisVertical, Settings } from "lucide-react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/../convex/_generated/api";
@@ -18,10 +19,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { EditAssetDialog } from "@/components/edit-asset-dialog";
+import type { Id } from "convex/_generated/dataModel";
+
+function AssetOptions({ assetId }: { assetId: Id<"asset"> }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const deleteAsset = useMutation(api.assets.deleteAsset);
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <EllipsisVertical className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="right">
+          <DropdownMenuItem>View Details</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DialogTrigger asChild>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+          </DialogTrigger>
+          <DropdownMenuItem onClick={() => deleteAsset({ id: assetId })}>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <EditAssetDialog assetId={assetId} onComplete={() => setIsOpen(false)} />
+    </Dialog>
+  );
+}
 
 export function AssetsTable() {
   const assets = useQuery(api.assets.getAssets);
-  const deleteAsset = useMutation(api.assets.deleteAsset);
+
   return (
     <Table>
       <TableHeader>
@@ -53,23 +84,7 @@ export function AssetsTable() {
               }).format(asset.principalAmount)}
             </TableCell>
             <TableCell>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <EllipsisVertical className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="right">
-                  <DropdownMenuItem>View Details</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={() => deleteAsset({ id: asset._id })}
-                  >
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <AssetOptions assetId={asset._id} />
             </TableCell>
           </TableRow>
         ))}

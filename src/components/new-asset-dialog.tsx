@@ -41,6 +41,7 @@ const assetSchema = z.object({
   endYear: z.coerce.number().optional(),
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
+  annualContribution: z.coerce.number().optional(),
 });
 
 export function NewAssetDialog() {
@@ -55,6 +56,7 @@ export function NewAssetDialog() {
       endYear: undefined,
       principalAmount: 0,
       interestRate: 0,
+      annualContribution: 0,
     },
   });
 
@@ -68,6 +70,7 @@ export function NewAssetDialog() {
       endYear: data.endYear,
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
+      annualContribution: data.annualContribution,
     });
     setIsOpen(false);
     newAssetForm.reset();
@@ -169,6 +172,27 @@ export function NewAssetDialog() {
                       />
                     </FormControl>
                     <Label className="w-12">%</Label>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={newAssetForm.control}
+              name="annualContribution"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual Contribution</FormLabel>
+                  <div className="flex flex-row gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        step="10000"
+                        className="text-right w-36"
+                      />
+                    </FormControl>
+                    <Label className="w-12">ZAR</Label>
                   </div>
                   <FormMessage />
                 </FormItem>
