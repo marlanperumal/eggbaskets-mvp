@@ -1,0 +1,57 @@
+[
+  {
+    "date": "2025",
+    "assets": 100000,
+    "liabilities": -50000
+  },
+  {
+    "date": "2026",
+    "assets": 150000,
+    "liabilities": -30000
+  },
+  {
+    "date": "2027",
+    "assets": 110000,
+    "liabilities": -48000
+  },
+  {
+    "date": "2028",
+    "assets": 120000,
+    "liabilities": -52000
+  },
+  {
+    "date": "2029",
+    "assets": 130000,
+    "liabilities": -56000
+  },
+  {
+    "date": "2030",
+    "assets": 140000,
+    "liabilities": -60000
+  },
+  {
+    "date": "2031",
+    "assets": 150000,
+    "liabilities": -64000
+  },
+  {
+    "date": "2032",
+    "assets": 160000,
+    "liabilities": -68000
+  },
+  {
+    "date": "2033",
+    "assets": 170000,
+    "liabilities": -72000
+  },
+  {
+    "date": "2034",
+    "assets": 180000,
+    "liabilities": -76000
+  },
+  {
+    "date": "2035",
+    "assets": 190000,
+    "liabilities": -80000
+  }
+]
