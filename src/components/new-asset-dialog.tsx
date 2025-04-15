@@ -2,7 +2,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { SquarePlus } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -80,7 +80,7 @@ export function NewAssetDialog() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon">
-          <SquarePlus />
+          <CirclePlus />
         </Button>
       </DialogTrigger>
       <DialogContent>

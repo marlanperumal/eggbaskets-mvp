@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const Route = createRootRoute({
   validateSearch: z.object({
-    npv: z.enum(["true", "false"]).optional().default("false"),
+    npv: z.boolean().optional().default(false),
   }),
   component: () => (
     <>

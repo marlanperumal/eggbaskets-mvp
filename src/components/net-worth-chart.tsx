@@ -1,12 +1,4 @@
-import {
-  Area,
-  XAxis,
-  YAxis,
-  AreaChart,
-  Line,
-  ComposedChart,
-  Legend,
-} from "recharts";
+import { Area, XAxis, YAxis, Line, ComposedChart, Legend } from "recharts";
 import { useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,12 +17,11 @@ export function NetWorthChart() {
     },
     netWorth: {
       label: "Net Worth",
-      color: "hsl(142.1 76.2% 36.3%)", // Green color for NPV
+      color: "hsl(142.1 76.2% 36.3%)",
     },
   } satisfies ChartConfig;
 
-  const { npv = "false" } = useSearch({ from: "/" });
-  const showNpv = npv === "true";
+  const { npv: showNpv } = useSearch({ from: "/" });
   const inflationRate = 5;
   const assets = useQuery(api.assets.getAssets);
   const liabilities = useQuery(api.liabilities.getLiabilities);

@@ -7,14 +7,14 @@ import { Switch } from "@/components/ui/switch";
 import { useSearch, useNavigate } from "@tanstack/react-router";
 
 export function TopBar() {
-  const { npv = "false" } = useSearch({ from: "/" });
+  const { npv = false } = useSearch({ from: "/" });
   const navigate = useNavigate();
 
   const handleNpvChange = (checked: boolean) => {
     navigate({
       to: "/",
       search: {
-        npv: checked ? "true" : "false",
+        npv: checked,
       },
     });
   };
@@ -30,7 +30,7 @@ export function TopBar() {
         <Label htmlFor="npv-switch">Show NPV</Label>
         <Switch
           id="npv-switch"
-          checked={npv === "true"}
+          checked={npv}
           onCheckedChange={handleNpvChange}
         />
         <Avatar>

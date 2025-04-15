@@ -7,6 +7,7 @@ import { ProfitChart } from "@/components/profit-chart";
 import { LiquidityChart } from "@/components/liquidity-chart";
 import { TopBar } from "@/components/top-bar";
 import { Goals } from "@/components/goals";
+
 export const Route = createFileRoute("/")({
   component: App,
 });
@@ -15,8 +16,8 @@ function App() {
   return (
     <div className="flex flex-col h-screen w-screen">
       <TopBar />
-      <main className="flex-1 flex flex-row justify-between items-stretch">
-        <div className="flex-1 p-2">
+      <main className="flex-1 flex flex-row items-stretch w-full">
+        <div className="p-2 w-1/2 min-w-0">
           <Tabs className="mb-2" defaultValue="balance-sheet">
             <TabsList className="w-full">
               <TabsTrigger value="balance-sheet">Balance Sheet</TabsTrigger>
@@ -36,7 +37,7 @@ function App() {
             </TabsContent>
           </Tabs>
         </div>
-        <div className="flex-1 flex flex-col p-2 gap-1">
+        <div className="w-1/2 min-w-0 flex flex-col p-2 gap-1">
           <NetWorthChart />
           <ProfitChart />
           <LiquidityChart />
