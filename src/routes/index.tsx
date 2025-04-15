@@ -3,8 +3,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BalanceSheet } from "@/components/balance-sheet";
 import { IncomeStatement } from "@/components/income-statement";
 import { NetWorthChart } from "@/components/net-worth-chart";
-import { ProfitChart } from "@/components/profit-chart";
-import { LiquidityChart } from "@/components/liquidity-chart";
+// import { ProfitChart } from "@/components/profit-chart";
+// import { LiquidityChart } from "@/components/liquidity-chart";
 import { TopBar } from "@/components/top-bar";
 import { Goals } from "@/components/goals";
 
@@ -39,8 +39,8 @@ function App() {
         </div>
         <div className="w-1/2 min-w-0 flex flex-col p-2 gap-1">
           <NetWorthChart />
-          <ProfitChart />
-          <LiquidityChart />
+          {/* <ProfitChart />
+          <LiquidityChart /> */}
         </div>
       </main>
     </div>

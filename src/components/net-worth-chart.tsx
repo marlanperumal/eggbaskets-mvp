@@ -35,22 +35,18 @@ export function NetWorthChart() {
   });
   const netWorthData = Array.from({ length: numPeriods + 1 }, (_, i) => {
     const year = startYear + i;
+    const accountBalanceReductions: Record<string, number> = {};
+
     const assetsValue = assets?.reduce((acc, asset) => {
       if (
         asset.startYear <= year &&
         (asset.endYear === undefined || asset.endYear >= year)
       ) {
-        // Calculate years of compound interest
         const yearsOfInterest = year - asset.startYear;
-
-        // Calculate compound interest on principal: P * (1 + r)^t
         const principalWithInterest =
           asset.principalAmount *
           Math.pow(1 + asset.interestRate / 100, yearsOfInterest);
 
-        // Calculate compound interest on annual contributions if they exist
-        // Formula: C * ((1 + r)^t - 1) / r
-        // where C is annual contribution, r is interest rate, t is years
         const annualContributionWithInterest = asset.annualContribution
           ? asset.interestRate === 0
             ? asset.annualContribution * yearsOfInterest
@@ -59,39 +55,57 @@ export function NetWorthChart() {
                 (asset.interestRate / 100))
           : 0;
 
+        // Track reductions from source accounts
+        if (asset.fromAccount && asset.annualContribution) {
+          accountBalanceReductions[asset.fromAccount] =
+            (accountBalanceReductions[asset.fromAccount] || 0) +
+            asset.annualContribution * yearsOfInterest;
+        }
+
         return acc + principalWithInterest + annualContributionWithInterest;
       }
       return acc;
     }, 0);
+
     const liabilitiesValue = liabilities?.reduce((acc, liability) => {
       if (
         liability.startYear <= year &&
         (liability.endYear === undefined || liability.endYear >= year)
       ) {
-        // Calculate years of compound interest
         const yearsOfInterest = year - liability.startYear;
-
-        // Calculate compound interest on principal: P * (1 + r)^t
         const principalWithInterest =
           liability.principalAmount *
           Math.pow(1 + liability.interestRate / 100, yearsOfInterest);
 
-        // Calculate compound interest reduction from annual repayments if they exist
-        // Formula: C * ((1 + r)^t - 1) / r
-        // where C is annual repayment, r is interest rate, t is years
         const annualRepaymentWithInterest = liability.annualRepayment
-          ? liability.annualRepayment *
-            ((Math.pow(1 + liability.interestRate / 100, yearsOfInterest) - 1) /
-              (liability.interestRate / 100))
+          ? liability.interestRate === 0
+            ? liability.annualRepayment * yearsOfInterest
+            : liability.annualRepayment *
+              ((Math.pow(1 + liability.interestRate / 100, yearsOfInterest) -
+                1) /
+                (liability.interestRate / 100))
           : 0;
 
-        // Negative because it's a liability, and repayments reduce the liability
+        // Track reductions from source accounts
+        if (liability.fromAccount && liability.annualRepayment) {
+          accountBalanceReductions[liability.fromAccount] =
+            (accountBalanceReductions[liability.fromAccount] || 0) +
+            liability.annualRepayment * yearsOfInterest;
+        }
+
         return acc - (principalWithInterest - annualRepaymentWithInterest);
       }
       return -acc;
     }, 0);
 
-    // Calculate NPV by discounting the net worth based on years from start
+    // Apply reductions to the final asset value
+    const finalAssetsValue =
+      assetsValue! -
+      Object.values(accountBalanceReductions).reduce(
+        (sum, val) => sum + val,
+        0
+      );
+
     const yearsFromStart = year - startYear;
     const npvFactor = !showNpv
       ? 1
@@ -99,9 +113,9 @@ export function NetWorthChart() {
 
     return {
       date: year.toString(),
-      assets: assetsValue! * npvFactor,
+      assets: finalAssetsValue * npvFactor,
       liabilities: liabilitiesValue! * npvFactor,
-      netWorth: (assetsValue! + liabilitiesValue!) * npvFactor,
+      netWorth: (finalAssetsValue + liabilitiesValue!) * npvFactor,
     };
   });
   return (
@@ -110,7 +124,7 @@ export function NetWorthChart() {
         <CardTitle>Net Worth</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={config} className="h-[150px] w-full">
+        <ChartContainer config={config} className="w-full">
           <ComposedChart data={netWorthData}>
             <XAxis
               dataKey="date"
