@@ -26,6 +26,7 @@ export const addLiability = mutation({
     principalAmount: v.number(),
     interestRate: v.number(),
     annualRepayment: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   },
   handler: async (ctx, args) => {
     const id = await ctx.db.insert("liability", args);
@@ -52,6 +53,7 @@ export const updateLiability = mutation({
     principalAmount: v.optional(v.number()),
     interestRate: v.optional(v.number()),
     annualRepayment: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
@@ -62,6 +64,7 @@ export const updateLiability = mutation({
       principalAmount: args.principalAmount,
       interestRate: args.interestRate,
       annualRepayment: args.annualRepayment,
+      fromAccount: args.fromAccount,
     });
   },
 });

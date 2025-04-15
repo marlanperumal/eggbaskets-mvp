@@ -23,6 +23,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,6 +41,7 @@ const liabilitySchema = z.object({
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
   annualRepayment: z.coerce.number().optional(),
+  fromAccount: z.optional(z.string()),
 });
 
 export function EditLiabilityDialog({
@@ -53,7 +55,7 @@ export function EditLiabilityDialog({
     return null;
   }
   const liability = useQuery(api.liabilities.getLiability, { id: liabilityId });
-
+  const assets = useQuery(api.assets.getAssets);
   const editLiabilityForm = useForm<z.infer<typeof liabilitySchema>>({
     resolver: zodResolver(liabilitySchema),
   });
@@ -69,6 +71,7 @@ export function EditLiabilityDialog({
         principalAmount: liability.principalAmount,
         interestRate: liability.interestRate,
         annualRepayment: liability.annualRepayment,
+        fromAccount: liability.fromAccount,
       });
     }
   }, [liability, editLiabilityForm]);
@@ -85,6 +88,7 @@ export function EditLiabilityDialog({
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
       annualRepayment: data.annualRepayment,
+      fromAccount: data.fromAccount as Id<"asset"> | undefined,
     });
     onComplete();
   }
@@ -188,27 +192,60 @@ export function EditLiabilityDialog({
               </FormItem>
             )}
           />
-          <FormField
-            control={editLiabilityForm.control}
-            name="annualRepayment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Annual Repayment</FormLabel>
-                <div className="flex flex-row gap-2 items-center">
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="10000"
-                      className="text-right w-36"
-                      {...field}
-                    />
-                  </FormControl>
-                  <Label className="w-12">ZAR</Label>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex flex-row gap-2 justify-between">
+            <FormField
+              control={editLiabilityForm.control}
+              name="annualRepayment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual Repayment</FormLabel>
+                  <div className="flex flex-row gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="10000"
+                        className="text-right w-36"
+                        {...field}
+                      />
+                    </FormControl>
+                    <Label className="w-12">ZAR</Label>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={editLiabilityForm.control}
+              name="fromAccount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>From Account</FormLabel>
+                  <Select
+                    onValueChange={(value) =>
+                      field.onChange(value === "reset" ? "" : value)
+                    }
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an account" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="reset">None</SelectItem>
+                      <SelectSeparator />
+                      {assets?.map((asset) => (
+                        <SelectItem key={asset._id} value={asset._id}>
+                          {asset.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex flex-row gap-2 justify-between">
             <FormField
               control={editLiabilityForm.control}

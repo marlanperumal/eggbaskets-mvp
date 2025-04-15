@@ -52,9 +52,11 @@ export function NetWorthChart() {
         // Formula: C * ((1 + r)^t - 1) / r
         // where C is annual contribution, r is interest rate, t is years
         const annualContributionWithInterest = asset.annualContribution
-          ? asset.annualContribution *
-            ((Math.pow(1 + asset.interestRate / 100, yearsOfInterest) - 1) /
-              (asset.interestRate / 100))
+          ? asset.interestRate === 0
+            ? asset.annualContribution * yearsOfInterest
+            : asset.annualContribution *
+              ((Math.pow(1 + asset.interestRate / 100, yearsOfInterest) - 1) /
+                (asset.interestRate / 100))
           : 0;
 
         return acc + principalWithInterest + annualContributionWithInterest;
@@ -134,7 +136,7 @@ export function NetWorthChart() {
               fill="var(--color-netWorth)"
               stroke="var(--color-netWorth)"
               strokeWidth={3}
-              type="natural"
+              type="monotone"
               dot={false}
             />
             <Legend />

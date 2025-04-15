@@ -27,10 +27,12 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useMutation } from "convex/react";
+import type { Id } from "@/../convex/_generated/dataModel";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Label } from "@/components/ui/label";
 
@@ -42,11 +44,12 @@ const assetSchema = z.object({
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
   annualContribution: z.coerce.number().optional(),
+  fromAccount: z.optional(z.string()),
 });
 
 export function NewAssetDialog() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const assets = useQuery(api.assets.getAssets);
   const newAssetForm = useForm<z.infer<typeof assetSchema>>({
     resolver: zodResolver(assetSchema),
     defaultValues: {
@@ -57,6 +60,7 @@ export function NewAssetDialog() {
       principalAmount: 0,
       interestRate: 0,
       annualContribution: 0,
+      fromAccount: undefined,
     },
   });
 
@@ -71,6 +75,7 @@ export function NewAssetDialog() {
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
       annualContribution: data.annualContribution,
+      fromAccount: data.fromAccount as Id<"asset"> | undefined,
     });
     setIsOpen(false);
     newAssetForm.reset();
@@ -177,27 +182,60 @@ export function NewAssetDialog() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={newAssetForm.control}
-              name="annualContribution"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Annual Contribution</FormLabel>
-                  <div className="flex flex-row gap-2 items-center">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step="10000"
-                        className="text-right w-36"
-                      />
-                    </FormControl>
-                    <Label className="w-12">ZAR</Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-row gap-2 justify-between">
+              <FormField
+                control={newAssetForm.control}
+                name="annualContribution"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Annual Contribution</FormLabel>
+                    <div className="flex flex-row gap-2 items-center">
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step="10000"
+                          className="text-right w-36"
+                        />
+                      </FormControl>
+                      <Label className="w-12">ZAR</Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={newAssetForm.control}
+                name="fromAccount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>From Account</FormLabel>
+                    <Select
+                      onValueChange={(value) =>
+                        field.onChange(value === "reset" ? "" : value)
+                      }
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an account" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="reset">None</SelectItem>
+                        <SelectSeparator />
+                        {assets?.map((asset) => (
+                          <SelectItem key={asset._id} value={asset._id}>
+                            {asset.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="flex flex-row gap-2 justify-between">
               <FormField
                 control={newAssetForm.control}

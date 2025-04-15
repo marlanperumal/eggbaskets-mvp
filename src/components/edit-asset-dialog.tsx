@@ -23,6 +23,7 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,6 +41,7 @@ const assetSchema = z.object({
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
   annualContribution: z.coerce.number().optional(),
+  fromAccount: z.string().optional(),
 });
 
 export function EditAssetDialog({
@@ -52,6 +54,7 @@ export function EditAssetDialog({
   if (!assetId) {
     return null;
   }
+  const assets = useQuery(api.assets.getAssets);
   const asset = useQuery(api.assets.getAsset, { id: assetId });
 
   const editAssetForm = useForm<z.infer<typeof assetSchema>>({
@@ -69,6 +72,7 @@ export function EditAssetDialog({
         principalAmount: asset.principalAmount,
         interestRate: asset.interestRate,
         annualContribution: asset.annualContribution,
+        fromAccount: asset.fromAccount,
       });
     }
   }, [asset, editAssetForm]);
@@ -85,6 +89,7 @@ export function EditAssetDialog({
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
       annualContribution: data.annualContribution,
+      fromAccount: data.fromAccount as Id<"asset"> | undefined,
     });
     onComplete();
   }
@@ -186,27 +191,60 @@ export function EditAssetDialog({
               </FormItem>
             )}
           />
-          <FormField
-            control={editAssetForm.control}
-            name="annualContribution"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Annual Contribution</FormLabel>
-                <div className="flex flex-row gap-2 items-center">
-                  <FormControl>
-                    <Input
-                      type="number"
-                      step="10000"
-                      className="text-right w-36"
-                      {...field}
-                    />
-                  </FormControl>
-                  <Label className="w-12">ZAR</Label>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex flex-row gap-2 justify-between">
+            <FormField
+              control={editAssetForm.control}
+              name="annualContribution"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Annual Contribution</FormLabel>
+                  <div className="flex flex-row gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        type="number"
+                        step="10000"
+                        className="text-right w-36"
+                        {...field}
+                      />
+                    </FormControl>
+                    <Label className="w-12">ZAR</Label>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={editAssetForm.control}
+              name="fromAccount"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>From Account</FormLabel>
+                  <Select
+                    onValueChange={(value) =>
+                      field.onChange(value === "reset" ? "" : value)
+                    }
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select an account" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="reset">None</SelectItem>
+                      <SelectSeparator />
+                      {assets?.map((asset) => (
+                        <SelectItem key={asset._id} value={asset._id}>
+                          {asset.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div className="flex flex-row gap-2 justify-between">
             <FormField
               control={editAssetForm.control}

@@ -15,6 +15,7 @@ export default defineSchema({
     principalAmount: v.number(),
     interestRate: v.number(),
     annualContribution: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   }),
   liability: defineTable({
     name: v.string(),
@@ -24,5 +25,6 @@ export default defineSchema({
     principalAmount: v.number(),
     interestRate: v.number(),
     annualRepayment: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   }),
 });

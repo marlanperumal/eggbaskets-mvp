@@ -26,6 +26,7 @@ export const addAsset = mutation({
     principalAmount: v.number(),
     interestRate: v.number(),
     annualContribution: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   },
   handler: async (ctx, args) => {
     const id = await ctx.db.insert("asset", args);
@@ -52,6 +53,7 @@ export const updateAsset = mutation({
     principalAmount: v.optional(v.number()),
     interestRate: v.optional(v.number()),
     annualContribution: v.optional(v.number()),
+    fromAccount: v.optional(v.id("asset")),
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
@@ -62,6 +64,7 @@ export const updateAsset = mutation({
       principalAmount: args.principalAmount,
       interestRate: args.interestRate,
       annualContribution: args.annualContribution,
+      fromAccount: args.fromAccount,
     });
   },
 });

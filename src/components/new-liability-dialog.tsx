@@ -27,10 +27,12 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useMutation } from "convex/react";
+import type { Id } from "@/../convex/_generated/dataModel";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 
 const liabilitySchema = z.object({
@@ -41,11 +43,12 @@ const liabilitySchema = z.object({
   principalAmount: z.coerce.number(),
   interestRate: z.coerce.number(),
   annualRepayment: z.coerce.number().optional(),
+  fromAccount: z.optional(z.string()),
 });
 
 export function NewLiabilityDialog() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const assets = useQuery(api.assets.getAssets);
   const newLiabilityForm = useForm<z.infer<typeof liabilitySchema>>({
     resolver: zodResolver(liabilitySchema),
     defaultValues: {
@@ -56,6 +59,7 @@ export function NewLiabilityDialog() {
       principalAmount: 0,
       interestRate: 0,
       annualRepayment: 0,
+      fromAccount: undefined,
     },
   });
 
@@ -70,6 +74,7 @@ export function NewLiabilityDialog() {
       principalAmount: data.principalAmount,
       interestRate: data.interestRate,
       annualRepayment: data.annualRepayment,
+      fromAccount: data.fromAccount as Id<"asset"> | undefined,
     });
     setIsOpen(false);
     newLiabilityForm.reset();
@@ -181,6 +186,39 @@ export function NewLiabilityDialog() {
                 </FormItem>
               )}
             />
+            <div className="flex flex-row gap-2 justify-between">
+              <FormField
+                control={newLiabilityForm.control}
+                name="fromAccount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>From Account</FormLabel>
+                    <Select
+                      onValueChange={(value) =>
+                        field.onChange(value === "reset" ? "" : value)
+                      }
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select an account" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="reset">None</SelectItem>
+                        <SelectSeparator />
+                        {assets?.map((asset) => (
+                          <SelectItem key={asset._id} value={asset._id}>
+                            {asset.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <div className="flex flex-row gap-2 justify-between">
               <FormField
                 control={newLiabilityForm.control}
