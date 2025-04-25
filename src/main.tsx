@@ -8,6 +8,7 @@ import { routeTree } from "@/routeTree.gen";
 import "@/styles.css";
 import reportWebVitals from "@/reportWebVitals.ts";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 
@@ -35,7 +36,9 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <ConvexProvider client={convex}>
-        <RouterProvider router={router} />
+        <TooltipProvider>
+          <RouterProvider router={router} />
+        </TooltipProvider>
       </ConvexProvider>
     </StrictMode>
   );
