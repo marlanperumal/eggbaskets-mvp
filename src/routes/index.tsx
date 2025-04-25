@@ -1,52 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BalanceSheet } from "@/components/balance-sheet";
-import { IncomeStatement } from "@/components/income-statement";
-import { NetWorthChart } from "@/components/net-worth-chart";
-// import { ProfitChart } from "@/components/profit-chart";
-// import { LiquidityChart } from "@/components/liquidity-chart";
-import { TopBar } from "@/components/top-bar";
-import { Goals } from "@/components/goals";
-import { RetirementCalculator } from "@/components/retirement-calculator";
+import { WandSparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 export const Route = createFileRoute("/")({
   component: App,
 });
 
 function App() {
   return (
-    <div className="flex flex-col h-screen">
-      <TopBar />
-      <main className="flex-1 flex flex-row items-stretch">
-        <div className="p-2 w-1/2 min-w-0">
-          <Tabs className="mb-2" defaultValue="retirement">
-            <TabsList className="w-full">
-              <TabsTrigger value="balance-sheet">Balance Sheet</TabsTrigger>
-              <TabsTrigger value="income-statement">
-                Income Statement
-              </TabsTrigger>
-              <TabsTrigger value="goals">Goals</TabsTrigger>
-              <TabsTrigger value="retirement">Retirement</TabsTrigger>
-            </TabsList>
-            <TabsContent value="balance-sheet">
-              <BalanceSheet />
-            </TabsContent>
-            <TabsContent value="income-statement">
-              <IncomeStatement />
-            </TabsContent>
-            <TabsContent value="goals">
-              <Goals />
-            </TabsContent>
-            <TabsContent value="retirement">
-              <RetirementCalculator />
-            </TabsContent>
-          </Tabs>
-        </div>
-        <div className="w-1/2 min-w-0 flex flex-col p-2 gap-1">
-          <NetWorthChart />
-          {/* <ProfitChart />
-          <LiquidityChart /> */}
-        </div>
-      </main>
-    </div>
+    <main className="flex flex-col items-center justify-center h-screen space-y-4">
+      <h1 className="text-4xl font-bold">Welcome to egg baskets</h1>
+      <p className="text-lg w-1/2 text-center">
+        a financial planning tool that helps you set goals, figure out how to
+        invest and save for them, and investigate different scenarios.
+      </p>
+      <Button>
+        <WandSparkles className="w-4 h-4" />
+        Get Started
+      </Button>
+    </main>
   );
 }

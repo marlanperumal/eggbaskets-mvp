@@ -77,111 +77,123 @@ export function RetirementCalculator() {
   }
   function onReset() {
     form.reset();
+    setPresentValue(null);
+    setFutureValue(null);
   }
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Retirement Calculator</CardTitle>
-        <CardDescription>
-          Calculate how much money you need to save for retirement
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mb-4"
-          >
-            <FormField
-              control={form.control}
-              name="currentAge"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Current Age{" "}
+    <div className="flex-1 flex flex-col gap-2 max-w-1/2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Retirement Calculator</CardTitle>
+          <CardDescription>
+            Calculate how much money you need to save for retirement
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 mb-4"
+            >
+              <FormField
+                control={form.control}
+                name="currentAge"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">Current Age </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>Your age now</p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" className="text-right" />
-                    </FormControl>
-                    <Label className="w-12"></Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="retirementAge"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Retirement Age{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12"></Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="retirementAge"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">Retirement Age </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>The age you plan on retiring</p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" className="text-right" />
-                    </FormControl>
-                    <Label className="w-12"></Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="numYearsRequired"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Number of Years Required{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12"></Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="numYearsRequired"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">
+                        Number of Years Required{" "}
+                      </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           How long you plan to live in retirement, drawing
                           income from your annuity
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" className="text-right" />
-                    </FormControl>
-                    <Label className="w-12"></Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="monthlyWithdrawal"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Monthly Withdrawal{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12"></Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="monthlyWithdrawal"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">
+                        Monthly Withdrawal{" "}
+                      </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>
@@ -193,94 +205,90 @@ export function RetirementCalculator() {
                           </p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step={1000}
-                        className="text-right"
-                      />
-                    </FormControl>
-                    <Label className="w-12">ZAR</Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="interestRate"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Interest Rate{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step={1000}
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12">ZAR</Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="interestRate"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">Interest Rate </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>The expected rate of return on your annuity</p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step={0.5}
-                        className="text-right"
-                      />
-                    </FormControl>
-                    <Label className="w-12">%</Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="inflationRate"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Inflation Rate{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step={0.5}
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12">%</Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="inflationRate"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">Inflation Rate </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>The expected rate of inflation</p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step={0.5}
-                        className="text-right"
-                      />
-                    </FormControl>
-                    <Label className="w-12">%</Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lumpsumRemaining"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex flex-row gap-4 items-center">
-                    <FormLabel className="w-1/3">
-                      Lumpsum Remaining{" "}
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step={0.5}
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12">%</Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lumpsumRemaining"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-row gap-4 items-center">
+                      <FormLabel className="w-1/3">
+                        Lumpsum Remaining{" "}
+                      </FormLabel>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Info className="w-4 h-4" />
+                          <Info />
                         </TooltipTrigger>
                         <TooltipContent className="max-w-sm">
                           <p>
@@ -291,83 +299,83 @@ export function RetirementCalculator() {
                           </p>
                         </TooltipContent>
                       </Tooltip>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        step={1000}
-                        className="text-right"
-                      />
-                    </FormControl>
-                    <Label className="w-12">ZAR</Label>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex flex-row gap-4 items-center justify-end">
-              <Button type="button" variant="outline" onClick={onReset}>
-                Reset
-              </Button>
-              <Button type="submit">Calculate</Button>
-            </div>
-          </form>
-        </Form>
-        {presentValue && futureValue && (
-          <Card>
-            <CardHeader className="-mb-4">
-              <CardTitle className="text-center">
-                At retirement you will need{" "}
-                <span className="text-xl font-bold">
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="number"
+                          step={1000}
+                          className="text-right"
+                        />
+                      </FormControl>
+                      <Label className="w-12">ZAR</Label>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex flex-row gap-4 items-center justify-end">
+                <Button type="button" variant="outline" onClick={onReset}>
+                  Reset
+                </Button>
+                <Button type="submit">Calculate</Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+      {presentValue && futureValue && (
+        <Card>
+          <CardHeader className="-mb-4">
+            <CardTitle className="text-center">
+              At retirement you will need{" "}
+              <span className="text-xl font-bold">
+                {new Intl.NumberFormat("en-ZA", {
+                  style: "currency",
+                  currency: "ZAR",
+                  maximumFractionDigits: 0,
+                }).format(futureValue)}{" "}
+              </span>
+              to purchase a living annuity to meet your requirements
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-center text-sm">
+            <ul>
+              <li>
+                This is the equivalent of{" "}
+                <span className="text-lg">
                   {new Intl.NumberFormat("en-ZA", {
                     style: "currency",
                     currency: "ZAR",
                     maximumFractionDigits: 0,
-                  }).format(futureValue)}{" "}
+                  }).format(presentValue)}
+                </span>{" "}
+                in today's money
+              </li>
+              <li>
+                The real return of your investments after inflation is{" "}
+                <span className="text-lg">
+                  {form.getValues("interestRate") -
+                    form.getValues("inflationRate")}
+                  %
                 </span>
-                to purchase a living annuity to meet your requirements
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-sm">
-              <ul>
-                <li>
-                  This is the equivalent of{" "}
-                  <span className="text-lg">
-                    {new Intl.NumberFormat("en-ZA", {
-                      style: "currency",
-                      currency: "ZAR",
-                      maximumFractionDigits: 0,
-                    }).format(presentValue)}
-                  </span>{" "}
-                  in today's money
-                </li>
-                <li>
-                  The real return of your investments after inflation is{" "}
-                  <span className="text-lg">
-                    {form.getValues("interestRate") -
-                      form.getValues("inflationRate")}
-                    %
-                  </span>
-                </li>
-                <li>
-                  Your annual drawdown must be between{" "}
-                  <span className="text-lg">2.5%</span> and{" "}
-                  <span className="text-lg">17.5%</span> each year. After you
-                  hit this upper limit and the amount you're able to withdraw
-                  will start to decrease
-                </li>
-              </ul>
-            </CardContent>
-            <CardFooter className="flex flex-row gap-4 items-center justify-center">
-              <Button>
-                <Target className="w-4 h-4" />
-                Add to your Goals
-              </Button>
-            </CardFooter>
-          </Card>
-        )}
-      </CardContent>
-    </Card>
+              </li>
+              <li>
+                Your annual drawdown must be between{" "}
+                <span className="text-lg">2.5%</span> and{" "}
+                <span className="text-lg">17.5%</span> each year. After you hit
+                this upper limit and the amount you're able to withdraw will
+                start to decrease
+              </li>
+            </ul>
+          </CardContent>
+          <CardFooter className="flex flex-row gap-4 items-center justify-center">
+            <Button>
+              <Target className="w-4 h-4" />
+              Add to your Goals
+            </Button>
+          </CardFooter>
+        </Card>
+      )}
+    </div>
   );
 }

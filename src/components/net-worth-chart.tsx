@@ -3,9 +3,8 @@ import { useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
-import { useSearch } from "@tanstack/react-router";
 
-export function NetWorthChart() {
+export function NetWorthChart({ npv = true }: { npv?: boolean }) {
   const config = {
     assets: {
       label: "Assets",
@@ -21,7 +20,7 @@ export function NetWorthChart() {
     },
   } satisfies ChartConfig;
 
-  const { npv: showNpv } = useSearch({ from: "/" });
+  const showNpv = npv;
   const inflationRate = 5;
   const assets = useQuery(api.assets.getAssets);
   const liabilities = useQuery(api.liabilities.getLiabilities);
@@ -119,7 +118,7 @@ export function NetWorthChart() {
     };
   });
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>Net Worth</CardTitle>
       </CardHeader>
