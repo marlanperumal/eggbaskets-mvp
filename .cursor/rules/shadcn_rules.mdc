@@ -1,0 +1,27 @@
+---
+description: 
+globs: **/*.tsx,**/*.ts,**/*.jsx,**/*.js
+alwaysApply: false
+---
+# shadcn instructions
+## Installing components
+Use the latest version of Shadcn to install new components, like this command to add a button component:
+
+```bash
+pnpx shadcn@latest add button
+```
+
+## Imports
+When importing a shadcn component into a file use the format
+
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+When importing my own components use the format
+
+```tsx
+import { BalanceSheet } from "@/components/balance-sheet"
+```
+
+In both cases prefer absolute imports with the `@` prefix rather than relative imports

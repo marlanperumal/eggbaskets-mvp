@@ -20,23 +20,9 @@ export const Route = createFileRoute("/retirement")({
 });
 
 function RetirementRoute() {
-  const search = Route.useSearch();
-  const navigate = Route.useNavigate();
-
   return (
     <div className="flex flex-row gap-2 p-2">
-      <RetirementCalculator
-        defaultValues={search}
-        onValuesChange={(values) => {
-          // Only update search params for non-null values
-          const searchValues = Object.fromEntries(
-            Object.entries(values).filter(([_, value]) => value != null)
-          ) as SearchParams;
-          navigate({
-            search: searchValues,
-          });
-        }}
-      />
+      <RetirementCalculator />
     </div>
   );
 }
