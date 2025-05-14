@@ -1,6 +1,5 @@
 import { Target } from "lucide-react";
 import {
-  Card,
   CardContent,
   CardFooter,
   CardHeader,
@@ -45,7 +44,7 @@ export function RetirementResultCard() {
     presentValue * (1 + inflationRate / 100) ** yearsTillRetirement;
 
   return (
-    <Card className="justify-center">
+    <>
       <CardHeader className="-mb-4">
         <CardTitle className="text-center">
           At retirement you will need{" "}
@@ -94,6 +93,6 @@ export function RetirementResultCard() {
           Add to your Goals
         </Button>
       </CardFooter>
-    </Card>
+    </>
   );
 }

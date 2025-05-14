@@ -3,13 +3,13 @@ import { RetirementCalculator } from "@/components/retirement-calculator";
 import { z } from "zod";
 
 const searchSchema = z.object({
-  currentAge: z.coerce.number().optional(),
-  retirementAge: z.coerce.number().optional(),
-  numYearsRequired: z.coerce.number().optional(),
-  monthlyWithdrawal: z.coerce.number().optional(),
-  interestRate: z.coerce.number().optional(),
-  inflationRate: z.coerce.number().optional(),
-  lumpsumRemaining: z.coerce.number().optional(),
+  currentAge: z.coerce.number().optional().default(50),
+  retirementAge: z.coerce.number().optional().default(65),
+  numYearsRequired: z.coerce.number().optional().default(20),
+  monthlyWithdrawal: z.coerce.number().optional().default(10000),
+  interestRate: z.coerce.number().optional().default(7),
+  inflationRate: z.coerce.number().optional().default(5),
+  lumpsumRemaining: z.coerce.number().optional().default(60000),
 });
 
 export type SearchParams = z.infer<typeof searchSchema>;

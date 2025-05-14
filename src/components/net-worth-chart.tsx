@@ -1,8 +1,20 @@
-import { Area, XAxis, YAxis, Line, ComposedChart, Legend } from "recharts";
+import {
+  Area,
+  XAxis,
+  YAxis,
+  Line,
+  ComposedChart,
+  CartesianGrid,
+} from "recharts";
 import { useQuery } from "convex/react";
 import { api } from "@/../convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from "@/components/ui/chart";
 
 export function NetWorthChart({ npv = true }: { npv?: boolean }) {
   const config = {
@@ -133,7 +145,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
               ticks={ticks}
               domain={[startYear, startYear + numPeriods]}
             />
-            <YAxis tickLine={false} axisLine={false} />
+            <YAxis />
+            <CartesianGrid />
             <Area
               dataKey="assets"
               fill="var(--color-assets)"
@@ -152,7 +165,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
               type="monotone"
               dot={false}
             />
-            <Legend />
+            <ChartLegend content={<ChartLegendContent />} />
           </ComposedChart>
         </ChartContainer>
       </CardContent>

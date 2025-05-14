@@ -2,10 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { RetirementResultCard } from "@/components/retirement-result-card";
 import { RetirementCalculatorForm } from "@/components/retirement-calculator-form";
-
+import { RetirementResultChart } from "@/components/retirement-result-chart";
 export function RetirementCalculator() {
   return (
-    <div className="flex flex-row gap-2 flex-wrap">
+    <div className="flex flex-row gap-2">
       <Card>
         <CardHeader className="-mb-2">
           <CardTitle>Retirement Calculator</CardTitle>
@@ -29,7 +29,17 @@ export function RetirementCalculator() {
           </Tabs>
         </CardContent>
       </Card>
-      <RetirementResultCard />
+      <Card className="justify-center">
+        <RetirementResultCard />
+      </Card>
+      <Card className="min-w-1/3">
+        <CardHeader>
+          <CardTitle>Retirement Result Chart</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <RetirementResultChart />
+        </CardContent>
+      </Card>
     </div>
   );
 }
