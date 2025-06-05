@@ -62,8 +62,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
           ? asset.interestRate === 0
             ? asset.annualContribution * yearsOfInterest
             : asset.annualContribution *
-              ((Math.pow(1 + asset.interestRate / 100, yearsOfInterest) - 1) /
-                (asset.interestRate / 100))
+            ((Math.pow(1 + asset.interestRate / 100, yearsOfInterest) - 1) /
+              (asset.interestRate / 100))
           : 0;
 
         // Track reductions from source accounts
@@ -92,9 +92,9 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
           ? liability.interestRate === 0
             ? liability.annualRepayment * yearsOfInterest
             : liability.annualRepayment *
-              ((Math.pow(1 + liability.interestRate / 100, yearsOfInterest) -
-                1) /
-                (liability.interestRate / 100))
+            ((Math.pow(1 + liability.interestRate / 100, yearsOfInterest) -
+              1) /
+              (liability.interestRate / 100))
           : 0;
 
         // Track reductions from source accounts
@@ -130,7 +130,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
     };
   });
   return (
-    <Card className="w-full">
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle>Net Worth</CardTitle>
       </CardHeader>
@@ -151,11 +151,13 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
               dataKey="assets"
               fill="var(--color-assets)"
               stroke="var(--color-assets)"
+              isAnimationActive={false}
             />
             <Area
               dataKey="liabilities"
               fill="var(--color-liabilities)"
               stroke="var(--color-liabilities)"
+              isAnimationActive={false}
             />
             <Line
               dataKey="netWorth"
@@ -164,6 +166,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
               strokeWidth={3}
               type="monotone"
               dot={false}
+              isAnimationActive={false}
             />
             <ChartLegend content={<ChartLegendContent />} />
           </ComposedChart>
