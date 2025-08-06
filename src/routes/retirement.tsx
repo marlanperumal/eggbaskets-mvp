@@ -10,7 +10,7 @@ const searchSchema = z.object({
   monthlyWithdrawal: z.coerce.number().optional().default(10000),
   interestRate: z.coerce.number().optional().default(7),
   inflationRate: z.coerce.number().optional().default(5),
-  lumpsumRemaining: z.coerce.number().optional().default(60000),
+  lumpsumRemaining: z.coerce.number().optional().default(700000),
 });
 
 export type SearchParams = z.infer<typeof searchSchema>;

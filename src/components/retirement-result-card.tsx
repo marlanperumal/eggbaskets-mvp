@@ -1,4 +1,5 @@
 import { Target } from "lucide-react";
+import { Link, useSearch } from "@tanstack/react-router";
 import {
   CardContent,
   CardFooter,
@@ -8,7 +9,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Route } from "@/routes/retirement";
 import { Route as GoalsRoute } from "@/routes/goals";
-import { Link, useSearch } from "@tanstack/react-router";
 
 export function RetirementResultCard() {
   const searchParams = useSearch({ from: Route.fullPath });

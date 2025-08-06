@@ -41,7 +41,7 @@ const defaultFormValues = {
   monthlyWithdrawal: 10000,
   interestRate: 7,
   inflationRate: 5,
-  lumpsumRemaining: 60000,
+  lumpsumRemaining: 700000,
 };
 
 export function RetirementCalculatorForm() {
@@ -389,7 +389,7 @@ export function RetirementCalculatorForm() {
                       <p>
                         The amount of money left in your annuity after the
                         number of years required. To make sure you don't hit the
-                        17.5% limit, set this to ~6x your monthly withdrawal.
+                        17.5% limit, set this to ~70x your monthly withdrawal.
                       </p>
                     </TooltipContent>
                   </Tooltip>
