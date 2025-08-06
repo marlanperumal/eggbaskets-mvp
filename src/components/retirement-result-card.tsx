@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/routes/retirement";
-import { useSearch } from "@tanstack/react-router";
+import { Route as GoalsRoute } from "@/routes/goals";
+import { Link, useSearch } from "@tanstack/react-router";
 
 export function RetirementResultCard() {
   const searchParams = useSearch({ from: Route.fullPath });
@@ -88,10 +89,12 @@ export function RetirementResultCard() {
         </ul>
       </CardContent>
       <CardFooter className="flex flex-col items-center">
-        <Button>
-          <Target className="w-4 h-4" />
-          Add to your Goals
-        </Button>
+        <Link to={GoalsRoute.to}>
+          <Button className="cursor-pointer">
+            <Target className="w-4 h-4" />
+            Add to your Goals
+          </Button>
+        </Link>
       </CardFooter>
     </>
   );

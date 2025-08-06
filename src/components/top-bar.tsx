@@ -42,32 +42,27 @@ export function TopBar({ npv }: { npv: boolean }) {
     <>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={HomeRoute.to}>Home</Link>
+          <Link to={HomeRoute.to}>🏠 Home</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={BalanceSheetRoute.to}>Balance Sheet</Link>
+          <Link to={RetirementRoute.to}>👴Retirement</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={IncomeStatementRoute.to}>Income Statement</Link>
+          <Link to={GoalsRoute.to}>🎯 Goals</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={CashFlowRoute.to}>Cash Flow</Link>
+          <Link to={BalanceSheetRoute.to}>💰 Financial Story</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={GoalsRoute.to}>Goals</Link>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <Link to={RetirementRoute.to}>Retirement</Link>
+          <Link to={CashFlowRoute.to}>💸Money Map</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </>
@@ -82,7 +77,9 @@ export function TopBar({ npv }: { npv: boolean }) {
           <h2 className="text-md mt-2 hidden sm:block">financial planning</h2>
         </div>
         <div className="flex flex-row gap-2 items-center">
-          <Label htmlFor="npv-switch" className="hidden sm:block">Show NPV</Label>
+          <Label htmlFor="npv-switch" className="hidden sm:block">
+            Show NPV
+          </Label>
           <Switch
             id="npv-switch"
             checked={npv}
@@ -100,29 +97,62 @@ export function TopBar({ npv }: { npv: boolean }) {
             <SheetContent side="right" className="w-[240px] sm:w-[360px]">
               <nav className="flex flex-col gap-4">
                 <SheetClose asChild>
-                  <Link to={HomeRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Home</Link>
+                  <Link
+                    to={HomeRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Home
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link to={BalanceSheetRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Balance Sheet</Link>
+                  <Link
+                    to={BalanceSheetRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Balance Sheet
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link to={IncomeStatementRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Income Statement</Link>
+                  <Link
+                    to={IncomeStatementRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Income Statement
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link to={CashFlowRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Cash Flow</Link>
+                  <Link
+                    to={CashFlowRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Cash Flow
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link to={GoalsRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Goals</Link>
+                  <Link
+                    to={GoalsRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Goals
+                  </Link>
                 </SheetClose>
                 <SheetClose asChild>
-                  <Link to={RetirementRoute.to} className="block px-2 py-1 hover:bg-slate-200 rounded">Retirement</Link>
+                  <Link
+                    to={RetirementRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Retirement
+                  </Link>
                 </SheetClose>
               </nav>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-      <NavigationMenu className="p-1 hidden md:block" defaultValue={HomeRoute.to}>
+      <NavigationMenu
+        className="p-1 hidden md:block"
+        defaultValue={HomeRoute.to}
+      >
         <NavigationMenuList>
           <NavigationItems />
         </NavigationMenuList>

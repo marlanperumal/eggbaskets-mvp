@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { WandSparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Route as RetirementRoute } from "@/routes/retirement";
 
 export const Route = createFileRoute("/")({
   component: App,
@@ -14,10 +15,12 @@ function App() {
         a financial planning tool that helps you set goals, figure out how to
         invest and save for them, and investigate different scenarios.
       </p>
-      <Button>
-        <WandSparkles className="w-4 h-4" />
-        Get Started
-      </Button>
+      <Link to={RetirementRoute.to}>
+        <Button className="cursor-pointer">
+          <WandSparkles className="w-4 h-4" />
+          Get Started
+        </Button>
+      </Link>
     </main>
   );
 }
