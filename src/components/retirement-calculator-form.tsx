@@ -46,12 +46,20 @@ const defaultFormValues = {
 
 export function RetirementCalculatorForm() {
   const searchParams = useSearch({ from: Route.fullPath });
+  const npv = searchParams.npv;
   const navigate = useNavigate({ from: Route.fullPath });
   const onValuesChange = useCallback(
     (values: z.infer<typeof retirementCalculatorSchema>) => {
-      navigate({ search: values, replace: true });
+      navigate({
+        search: (search) => ({
+          ...search,
+          ...values,
+          npv,
+        }),
+        replace: true,
+      });
     },
-    [navigate]
+    [navigate, npv]
   );
   const form = useForm<z.infer<typeof retirementCalculatorSchema>>({
     resolver: zodResolver(retirementCalculatorSchema),
@@ -408,8 +416,8 @@ export function RetirementCalculatorForm() {
                     <div className="flex flex-row gap-2 items-center">
                       <Slider
                         min={0}
-                        max={1000000}
-                        step={10000}
+                        max={10000000}
+                        step={100000}
                         value={[field.value]}
                         onValueChange={(value) => {
                           field.onChange(value[0]);

@@ -11,6 +11,7 @@ const searchSchema = z.object({
   interestRate: z.coerce.number().optional().default(7),
   inflationRate: z.coerce.number().optional().default(5),
   lumpsumRemaining: z.coerce.number().optional().default(700000),
+  npv: z.boolean().optional().default(true),
 });
 
 export type SearchParams = z.infer<typeof searchSchema>;

@@ -17,11 +17,11 @@ import { Route } from "@/routes/retirement";
 
 const config = {
   actualWithdrawals: {
-    label: "Actual Annual Withdrawals",
+    label: "Actual Monthly Withdrawals",
     color: "hsl(217.2 91.2% 59.8%)",
   },
   desiredWithdrawals: {
-    label: "Desired Annual Withdrawals",
+    label: "Desired Monthly Withdrawals",
     color: "hsl(0 0% 25.1%)",
   },
   annuityValue: {
@@ -40,6 +40,7 @@ export function RetirementResultChart() {
     interestRate,
     inflationRate,
     lumpsumRemaining,
+    npv,
   } = searchParams;
 
   if (
@@ -56,34 +57,45 @@ export function RetirementResultChart() {
 
   const yearsTillRetirement = retirementAge - currentAge;
   const realInterestRate = (interestRate - inflationRate) / 100;
-  const annualWithdrawal = monthlyWithdrawal * 12;
+  const presentAnnualWithdrawal = monthlyWithdrawal * 12;
+  const npvFactor = npv ? inflationRate / 100 : 0;
   const annuityPrincipal =
-    (annualWithdrawal * (1 - (1 + realInterestRate) ** -numYearsRequired)) /
+    (presentAnnualWithdrawal *
+      (1 - (1 + realInterestRate) ** -numYearsRequired)) /
       realInterestRate +
     lumpsumRemaining / (1 + realInterestRate) ** yearsTillRetirement;
   const years = Array.from(
     { length: numYearsRequired + 1 },
     (_, i) => i + retirementAge
   );
-  const desiredWithdrawals = years.map(
-    (year, _) =>
-      annualWithdrawal * (1 + inflationRate / 100) ** (year - currentAge)
-  );
-  const annuityValues = years.map((year, i) => {
-    const annuityValue =
-      annuityPrincipal * (1 + realInterestRate) ** i +
-      (annualWithdrawal * (1 - (1 + realInterestRate) ** i)) / realInterestRate;
-    return annuityValue * (1 + inflationRate / 100) ** (year - currentAge);
-  });
+
+  let annuityValue = annuityPrincipal;
+  let desiredWithdrawal = presentAnnualWithdrawal;
+  let actualWithdrawal = Math.min(desiredWithdrawal, annuityValue * 0.175);
+
+  const annuityValues = [annuityValue];
+  const desiredWithdrawals = [desiredWithdrawal];
+  const actualWithdrawals = [actualWithdrawal];
+
+  for (let i = 1; i < years.length; i++) {
+    annuityValue = annuityValue * (1 + realInterestRate) - actualWithdrawal;
+    actualWithdrawal = Math.min(desiredWithdrawal, annuityValue * 0.175);
+    annuityValues.push(annuityValue);
+    desiredWithdrawals.push(desiredWithdrawal);
+    actualWithdrawals.push(actualWithdrawal);
+  }
   const data = years.map((year, i) => ({
     year,
-    desiredWithdrawals: desiredWithdrawals[i],
-    actualWithdrawals: desiredWithdrawals[i],
-    annuityValue: annuityValues[i] || 0,
+    desiredWithdrawals:
+      (desiredWithdrawals[i] / 12) * (1 + npvFactor) ** (year - currentAge),
+    actualWithdrawals:
+      (actualWithdrawals[i] / 12) * (1 + npvFactor) ** (year - currentAge),
+    annuityValue: annuityValues[i] * (1 + npvFactor) ** (year - currentAge),
   }));
+
   return (
     <ChartContainer config={config} className="w-full">
-      <ComposedChart data={data} className="p-2">
+      <ComposedChart data={data} className="p-4">
         <XAxis
           dataKey="year"
           label={{
@@ -131,13 +143,14 @@ export function RetirementResultChart() {
           yAxisId="right"
         />
         <Tooltip
-          formatter={(value: number) =>
+          formatter={(value: number, name: string) => [
             new Intl.NumberFormat("en-ZA", {
               style: "currency",
               currency: "ZAR",
               maximumFractionDigits: 0,
-            }).format(value)
-          }
+            }).format(value),
+            config[name as keyof typeof config].label,
+          ]}
         />
         <ChartLegend content={<ChartLegendContent />} />
       </ComposedChart>

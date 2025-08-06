@@ -32,9 +32,10 @@ export function TopBar({ npv }: { npv: boolean }) {
   const handleNpvChange = (checked: boolean) => {
     navigate({
       to: ".",
-      search: {
+      search: (search) => ({
+        ...search,
         npv: checked,
-      },
+      }),
     });
   };
 
