@@ -1,5 +1,5 @@
 import { Target } from "lucide-react";
-import { Link, useSearch } from "@tanstack/react-router";
+import { useSearch } from "@tanstack/react-router";
 import {
   CardContent,
   CardFooter,
@@ -8,10 +8,12 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Route } from "@/routes/retirement";
-import { Route as GoalsRoute } from "@/routes/goals";
+import { useStore } from "@/store";
+import { toast } from "sonner";
 
 export function RetirementResultCard() {
   const searchParams = useSearch({ from: Route.fullPath });
+  const addGoal = useStore((state) => state.addGoal);
   const {
     currentAge,
     retirementAge,
@@ -44,6 +46,41 @@ export function RetirementResultCard() {
     lumpsumRemaining / (1 + realInterestRate) ** numYearsRequired;
   const futureValue =
     presentValue * (1 + inflationRate / 100) ** yearsTillRetirement;
+
+  const handleAddToGoals = () => {
+    const goal = {
+      id: crypto.randomUUID() as string,
+      name: "Save for Retirement",
+      description: `Save ${new Intl.NumberFormat("en-ZA", {
+        style: "currency",
+        currency: "ZAR",
+        maximumFractionDigits: 0,
+      }).format(
+        presentValue
+      )} (in today's money) by age ${retirementAge} to fund ${numYearsRequired} years of retirement with ${new Intl.NumberFormat(
+        "en-ZA",
+        {
+          style: "currency",
+          currency: "ZAR",
+          maximumFractionDigits: 0,
+        }
+      ).format(annualWithdrawal)} annual withdrawal`,
+      type: "Retirement" as const,
+      value: Math.round(presentValue),
+      startYear: 2025 + yearsTillRetirement,
+      recurrence: 1,
+      numOccurrences: 1,
+      funded: false,
+    };
+
+    addGoal(goal);
+    toast.success("Retirement goal created successfully!", {
+      description: `Added "Save for Retirement" goal to your financial plan.`,
+      classNames: {
+        description: "!text-muted-foreground",
+      },
+    });
+  };
 
   return (
     <>
@@ -90,12 +127,10 @@ export function RetirementResultCard() {
         </ul>
       </CardContent>
       <CardFooter className="flex flex-col items-center">
-        <Link to={GoalsRoute.to}>
-          <Button className="cursor-pointer">
-            <Target className="w-4 h-4" />
-            Add to your Goals
-          </Button>
-        </Link>
+        <Button className="cursor-pointer" onClick={handleAddToGoals}>
+          <Target className="w-4 h-4" />
+          Add to your Goals
+        </Button>
       </CardFooter>
     </>
   );

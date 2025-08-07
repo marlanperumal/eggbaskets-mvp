@@ -9,6 +9,7 @@ import "@/styles.css";
 import reportWebVitals from "@/reportWebVitals.ts";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/sonner";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 
@@ -38,6 +39,7 @@ if (rootElement && !rootElement.innerHTML) {
       <ConvexProvider client={convex}>
         <TooltipProvider>
           <RouterProvider router={router} />
+          <Toaster />
         </TooltipProvider>
       </ConvexProvider>
     </StrictMode>
