@@ -62,10 +62,10 @@ export function AssetsTable() {
           <TableHead>Start Year</TableHead>
           <TableHead>End Year</TableHead>
           <TableHead className="text-right">Principal</TableHead>
-          <TableHead className="text-right">
-            <Button variant="ghost" size="icon">
+          <TableHead className="text-center">
+            <div className="flex justify-center">
               <Settings className="w-4 h-4" />
-            </Button>
+            </div>
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -83,7 +83,7 @@ export function AssetsTable() {
                 maximumFractionDigits: 0,
               }).format(asset.principalAmount)}
             </TableCell>
-            <TableCell>
+            <TableCell className="flex justify-center">
               <AssetOptions assetId={asset._id} />
             </TableCell>
           </TableRow>

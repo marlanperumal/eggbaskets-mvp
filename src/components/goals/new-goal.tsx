@@ -26,10 +26,11 @@ import {
   DialogDescription,
 } from "../ui/dialog";
 import { CirclePlus } from "lucide-react";
+import { useStore } from "@/store";
 
 const goalSchema = z.object({
   name: z.string(),
-  description: z.string().optional(),
+  description: z.string(),
   type: z.enum(["Retirement", "Asset", "Expense"]),
   value: z.coerce.number(),
   startYear: z.coerce.number(),
@@ -40,6 +41,7 @@ const goalSchema = z.object({
 
 export function NewGoal() {
   const [isOpen, setIsOpen] = useState(false);
+  const addGoal = useStore((state) => state.addGoal);
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
     defaultValues: {
@@ -56,7 +58,7 @@ export function NewGoal() {
 
   function onSubmit(data: z.infer<typeof goalSchema>) {
     console.log("Form submitted");
-    console.log(data);
+    addGoal({ ...data, id: crypto.randomUUID() as string });
     setIsOpen(false);
   }
 

@@ -22,6 +22,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.23.0",
     "lucide-react": "^0.476.0",
+    "radix-ui": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.55.0",
@@ -30,7 +31,7 @@
     "tailwindcss": "^4.0.6",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2",
-    "radix-ui": "latest"
+    "zustand": "^5.0.7"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
