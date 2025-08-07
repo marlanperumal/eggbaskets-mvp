@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { createFileRoute } from "@tanstack/react-router";
-import GoalsTable from "@/components/goals/goals-table";
+import { GoalsTable } from "@/components/goals/goals-table";
+import { GoalsChart } from "@/components/goals/goals-chart";
 
 export const Route = createFileRoute("/goals")({
   component: RouteComponent,
@@ -25,6 +26,7 @@ function RouteComponent() {
       </Card>
       <div className="flex flex-row gap-2">
         <GoalsTable />
+        <GoalsChart />
       </div>
     </div>
   );

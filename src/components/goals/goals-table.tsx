@@ -50,7 +50,7 @@ function GoalOptions({ goalId }: { goalId: string }) {
   );
 }
 
-export default function GoalsTable() {
+export function GoalsTable() {
   const goals = useStore((state) => state.goals);
 
   return (
