@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { NewGoal } from "./new-goal";
+import { EditGoal } from "./edit-goal";
 import {
   Table,
   TableHeader,
@@ -18,25 +20,33 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "../ui/dropdown-menu";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 
 function GoalOptions({ goalId }: { goalId: string }) {
+  const [isOpen, setIsOpen] = useState(false);
   const deleteGoal = useStore((state) => state.deleteGoal);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <EllipsisVertical className="w-4 h-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem>View Details</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => deleteGoal(goalId)}>
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <EllipsisVertical className="w-4 h-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>View Details</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DialogTrigger asChild>
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+          </DialogTrigger>
+          <DropdownMenuItem onClick={() => deleteGoal(goalId)}>
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <EditGoal goalId={goalId} onClose={() => setIsOpen(false)} />
+    </Dialog>
   );
 }
 
@@ -58,6 +68,7 @@ export default function GoalsTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
+              <TableHead>Type</TableHead>
               <TableHead>Value</TableHead>
               <TableHead>Start Year</TableHead>
               <TableHead>Funded</TableHead>
@@ -72,6 +83,7 @@ export default function GoalsTable() {
             {goals.map((goal) => (
               <TableRow key={goal.id}>
                 <TableCell>{goal.name}</TableCell>
+                <TableCell>{goal.type}</TableCell>
                 <TableCell>{goal.value}</TableCell>
                 <TableCell>{goal.startYear}</TableCell>
                 <TableCell>{goal.funded ? "Yes" : "No"}</TableCell>
