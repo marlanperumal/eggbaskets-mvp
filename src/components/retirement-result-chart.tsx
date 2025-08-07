@@ -44,26 +44,26 @@ export function RetirementResultChart() {
   } = searchParams;
 
   if (
-    !currentAge ||
-    !retirementAge ||
-    !numYearsRequired ||
-    !monthlyWithdrawal ||
-    !interestRate ||
-    !inflationRate ||
-    !lumpsumRemaining
+    !(currentAge! > 0) ||
+    !(retirementAge! > 0) ||
+    !(numYearsRequired! > 0) ||
+    !(monthlyWithdrawal! > 0) ||
+    !(interestRate! > 0) ||
+    !(inflationRate! > 0) ||
+    !(lumpsumRemaining! > -1)
   ) {
     return null;
   }
 
-  const yearsTillRetirement = retirementAge - currentAge;
-  const realInterestRate = (interestRate - inflationRate) / 100;
+  const realInterestRate =
+    (1 + interestRate / 100) / (1 + inflationRate / 100) - 1;
   const presentAnnualWithdrawal = monthlyWithdrawal * 12;
-  const npvFactor = npv ? inflationRate / 100 : 0;
+  const npvFactor = npv ? 0 : inflationRate / 100;
   const annuityPrincipal =
     (presentAnnualWithdrawal *
       (1 - (1 + realInterestRate) ** -numYearsRequired)) /
       realInterestRate +
-    lumpsumRemaining / (1 + realInterestRate) ** yearsTillRetirement;
+    lumpsumRemaining / (1 + realInterestRate) ** numYearsRequired;
   const years = Array.from(
     { length: numYearsRequired + 1 },
     (_, i) => i + retirementAge

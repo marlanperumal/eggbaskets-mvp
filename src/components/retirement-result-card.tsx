@@ -23,24 +23,25 @@ export function RetirementResultCard() {
   } = searchParams;
 
   if (
-    !currentAge ||
-    !retirementAge ||
-    !numYearsRequired ||
-    !monthlyWithdrawal ||
-    !interestRate ||
-    !inflationRate ||
-    !lumpsumRemaining
+    !(currentAge! > 0) ||
+    !(retirementAge! > 0) ||
+    !(numYearsRequired! > 0) ||
+    !(monthlyWithdrawal! > 0) ||
+    !(interestRate! > 0) ||
+    !(inflationRate! > 0) ||
+    !(lumpsumRemaining! > -1)
   ) {
     return null;
   }
 
   const yearsTillRetirement = retirementAge - currentAge;
   const annualWithdrawal = monthlyWithdrawal * 12;
-  const realInterestRate = (interestRate - inflationRate) / 100;
+  const realInterestRate =
+    (1 + interestRate / 100) / (1 + inflationRate / 100) - 1;
   const presentValue =
     (annualWithdrawal * (1 - (1 + realInterestRate) ** -numYearsRequired)) /
       realInterestRate +
-    lumpsumRemaining / (1 + realInterestRate) ** yearsTillRetirement;
+    lumpsumRemaining / (1 + realInterestRate) ** numYearsRequired;
   const futureValue =
     presentValue * (1 + inflationRate / 100) ** yearsTillRetirement;
 
