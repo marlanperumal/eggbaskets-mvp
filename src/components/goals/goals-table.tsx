@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { NewGoal } from "./new-goal";
 import { EditGoal } from "./edit-goal";
+import { GoalDetails } from "./goal-details";
 import {
   Table,
   TableHeader,
@@ -23,30 +24,39 @@ import {
 import { Dialog, DialogTrigger } from "../ui/dialog";
 
 function GoalOptions({ goalId }: { goalId: string }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const deleteGoal = useStore((state) => state.deleteGoal);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <EllipsisVertical className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>View Details</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DialogTrigger asChild>
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-          </DialogTrigger>
-          <DropdownMenuItem onClick={() => deleteGoal(goalId)}>
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <EditGoal goalId={goalId} onClose={() => setIsOpen(false)} />
-    </Dialog>
+    <>
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <EllipsisVertical className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onClick={() => setIsDetailsOpen(true)}>
+              View Details
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DialogTrigger asChild>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+            </DialogTrigger>
+            <DropdownMenuItem onClick={() => deleteGoal(goalId)}>
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <EditGoal goalId={goalId} onClose={() => setIsEditOpen(false)} />
+      </Dialog>
+
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <GoalDetails goalId={goalId} onClose={() => setIsDetailsOpen(false)} />
+      </Dialog>
+    </>
   );
 }
 
