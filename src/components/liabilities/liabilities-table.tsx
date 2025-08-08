@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { NewLiability } from "./new-liability";
 import {
   Table,
   TableHeader,
@@ -66,7 +67,7 @@ export function LiabilitiesTable() {
         <CardTitle>
           <div className="flex flex-row gap-2 items-center justify-between">
             Liabilities
-            {/* TODO: Add NewLiability component */}
+            <NewLiability />
           </div>
         </CardTitle>
       </CardHeader>

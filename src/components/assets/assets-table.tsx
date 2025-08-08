@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { NewAsset } from "./new-asset";
 import {
   Table,
   TableHeader,
@@ -66,7 +67,7 @@ export function AssetsTable() {
         <CardTitle>
           <div className="flex flex-row gap-2 items-center justify-between">
             Assets
-            {/* TODO: Add NewAsset component */}
+            <NewAsset />
           </div>
         </CardTitle>
       </CardHeader>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { NewExpense } from "./new-expense";
 import {
   Table,
   TableHeader,
@@ -66,7 +67,7 @@ export function ExpensesTable() {
         <CardTitle>
           <div className="flex flex-row gap-2 items-center justify-between">
             Expenses
-            {/* TODO: Add NewExpense component */}
+            <NewExpense />
           </div>
         </CardTitle>
       </CardHeader>
