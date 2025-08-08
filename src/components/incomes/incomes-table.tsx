@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { NewIncome } from "./new-income";
 import {
   Table,
   TableHeader,
@@ -66,7 +67,7 @@ export function IncomesTable() {
         <CardTitle>
           <div className="flex flex-row gap-2 items-center justify-between">
             Incomes
-            {/* TODO: Add NewIncome component */}
+            <NewIncome />
           </div>
         </CardTitle>
       </CardHeader>
