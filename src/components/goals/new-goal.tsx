@@ -2,19 +2,19 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form, FormField, FormLabel, FormItem, FormControl } from "../ui/form";
-import { Input } from "../ui/input";
+import { Form, FormField, FormLabel, FormItem, FormControl } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectItem,
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { Switch } from "../ui/switch";
-import { Button } from "../ui/button";
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogTitle,
@@ -24,7 +24,7 @@ import {
   DialogFooter,
   DialogClose,
   DialogDescription,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import { CirclePlus } from "lucide-react";
 import { useStore } from "@/store";
 

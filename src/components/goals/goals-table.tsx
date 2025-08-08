@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewGoal } from "./new-goal";
 import { EditGoal } from "./edit-goal";
 import { GoalDetails } from "./goal-details";
@@ -10,9 +10,9 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "../ui/table";
+} from "@/components/ui/table";
 import { useStore } from "@/store";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Settings } from "lucide-react";
 import {
   DropdownMenu,
@@ -20,8 +20,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from "../ui/dropdown-menu";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+} from "@/components/ui/dropdown-menu";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 function GoalOptions({ goalId }: { goalId: string }) {
   const [isEditOpen, setIsEditOpen] = useState(false);

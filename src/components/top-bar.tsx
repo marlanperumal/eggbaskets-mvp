@@ -34,6 +34,8 @@ export function TopBar({ npv }: { npv: boolean }) {
         ...search,
         npv: checked,
       }),
+      replace: true,
+      resetScroll: false,
     });
   };
 
