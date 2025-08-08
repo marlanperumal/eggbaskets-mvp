@@ -10,35 +10,35 @@ export function MoneyMap() {
   const assets = useStore((state) => state.assets);
   const liabilities = useStore((state) => state.liabilities);
 
-  // Calculate monthly budget surplus/deficit
-  const totalMonthlyIncome = incomes.reduce((sum, income) => sum + income.value, 0);
-  const totalMonthlyExpenses = expenses.reduce((sum, expense) => sum + expense.value, 0);
-  const totalMonthlyAssetContributions = assets.reduce((sum, asset) => sum + asset.monthlyContribution, 0);
-  const totalMonthlyLiabilityPayments = liabilities.reduce((sum, liability) => sum + liability.monthlyPayment, 0);
+  // Calculate annual budget surplus/deficit (convert monthly to annual)
+  const totalAnnualIncome = incomes.reduce((sum, income) => sum + income.value * 12, 0);
+  const totalAnnualExpenses = expenses.reduce((sum, expense) => sum + expense.value * 12, 0);
+  const totalAnnualAssetContributions = assets.reduce((sum, asset) => sum + asset.monthlyContribution * 12, 0);
+  const totalAnnualLiabilityPayments = liabilities.reduce((sum, liability) => sum + liability.monthlyPayment * 12, 0);
 
-  const monthlyBudgetSurplus = totalMonthlyIncome - totalMonthlyExpenses - totalMonthlyAssetContributions - totalMonthlyLiabilityPayments;
+  const annualBudgetSurplus = totalAnnualIncome - totalAnnualExpenses - totalAnnualAssetContributions - totalAnnualLiabilityPayments;
 
   // Format the result
   const formattedAmount = new Intl.NumberFormat("en-ZA", {
     style: "currency",
     currency: "ZAR",
     maximumFractionDigits: 0,
-  }).format(Math.abs(monthlyBudgetSurplus));
+  }).format(Math.abs(annualBudgetSurplus));
 
   const getBudgetText = () => {
-    if (monthlyBudgetSurplus > 0) {
-      return `Monthly Budget Surplus: ${formattedAmount}`;
-    } else if (monthlyBudgetSurplus < 0) {
-      return `Monthly Budget Deficit: ${formattedAmount}`;
+    if (annualBudgetSurplus > 0) {
+      return `Annual Budget Surplus: ${formattedAmount}`;
+    } else if (annualBudgetSurplus < 0) {
+      return `Annual Budget Deficit: ${formattedAmount}`;
     } else {
-      return `Balanced Monthly Budget: ${formattedAmount}`;
+      return `Balanced Annual Budget: ${formattedAmount}`;
     }
   };
 
   const getTextColor = () => {
-    if (monthlyBudgetSurplus > 0) {
+    if (annualBudgetSurplus > 0) {
       return "text-green-600";
-    } else if (monthlyBudgetSurplus < 0) {
+    } else if (annualBudgetSurplus < 0) {
       return "text-red-600";
     } else {
       return "text-gray-600";
@@ -61,17 +61,17 @@ export function MoneyMap() {
     // Show sample data when no real data exists
     sankeyData = {
       nodes: [
-        { name: "Sample Income\nR 10,000", fill: "#10b981" },
-        { name: "Total Budget\nR 10,000", fill: "#3b82f6" },
-        { name: "Sample Expense\nR 6,000", fill: "#f59e0b" },
-        { name: "Sample Asset\nR 3,000", fill: "#8b5cf6" },
-        { name: "Budget Surplus\nR 1,000", fill: "#059669" }
+        { name: "Sample Income\nR 120,000", fill: "#10b981" },
+        { name: "Total Budget\nR 120,000", fill: "#3b82f6" },
+        { name: "Sample Expense\nR 72,000", fill: "#f59e0b" },
+        { name: "Sample Asset\nR 36,000", fill: "#8b5cf6" },
+        { name: "Budget Surplus\nR 12,000", fill: "#059669" }
       ],
       links: [
-        { source: 0, target: 1, value: 10000 },
-        { source: 1, target: 2, value: 6000 },
-        { source: 1, target: 3, value: 3000 },
-        { source: 1, target: 4, value: 1000 }
+        { source: 0, target: 1, value: 120000 },
+        { source: 1, target: 2, value: 72000 },
+        { source: 1, target: 3, value: 36000 },
+        { source: 1, target: 4, value: 12000 }
       ]
     };
   } else {
@@ -86,7 +86,7 @@ export function MoneyMap() {
     incomes.forEach((income) => {
       if (income.value > 0) {
         nodes.push({
-          name: `${income.name}\n${formatCurrency(income.value)}`,
+          name: `${income.name}\n${formatCurrency(income.value * 12)}`,
           fill: "#10b981" // Green for income
         });
         incomeNodeIndices.push(nodeIndex);
@@ -96,9 +96,9 @@ export function MoneyMap() {
 
     // Add deficit node in first column if needed
     let deficitNodeIndex = -1;
-    if (monthlyBudgetSurplus < 0) {
+    if (annualBudgetSurplus < 0) {
       nodes.push({
-        name: `Budget Deficit\n${formatCurrency(Math.abs(monthlyBudgetSurplus))}`,
+        name: `Budget Deficit\n${formatCurrency(Math.abs(annualBudgetSurplus))}`,
         fill: "#ef4444" // Red for deficit
       });
       deficitNodeIndex = nodeIndex;
@@ -108,7 +108,7 @@ export function MoneyMap() {
     // Second column: Combined budget node
     const budgetNodeIndex = nodeIndex;
     nodes.push({
-      name: `Total Budget\n${formatCurrency(totalMonthlyIncome)}`,
+      name: `Total Budget\n${formatCurrency(totalAnnualIncome)}`,
       fill: "#3b82f6" // Blue for budget
     });
     nodeIndex++;
@@ -120,7 +120,7 @@ export function MoneyMap() {
     expenses.forEach((expense) => {
       if (expense.value > 0) {
         nodes.push({
-          name: `${expense.name}\n${formatCurrency(expense.value)}`,
+          name: `${expense.name}\n${formatCurrency(expense.value * 12)}`,
           fill: "#f59e0b" // Orange for expenses
         });
         outflowNodeIndices.push(nodeIndex);
@@ -132,7 +132,7 @@ export function MoneyMap() {
     assets.forEach((asset) => {
       if (asset.monthlyContribution > 0) {
         nodes.push({
-          name: `${asset.name}\n${formatCurrency(asset.monthlyContribution)}`,
+          name: `${asset.name}\n${formatCurrency(asset.monthlyContribution * 12)}`,
           fill: "#8b5cf6" // Purple for assets
         });
         outflowNodeIndices.push(nodeIndex);
@@ -144,7 +144,7 @@ export function MoneyMap() {
     liabilities.forEach((liability) => {
       if (liability.monthlyPayment > 0) {
         nodes.push({
-          name: `${liability.name}\n${formatCurrency(liability.monthlyPayment)}`,
+          name: `${liability.name}\n${formatCurrency(liability.monthlyPayment * 12)}`,
           fill: "#dc2626" // Red for liabilities
         });
         outflowNodeIndices.push(nodeIndex);
@@ -154,9 +154,9 @@ export function MoneyMap() {
 
     // Add surplus node in third column if needed
     let surplusNodeIndex = -1;
-    if (monthlyBudgetSurplus > 0) {
+    if (annualBudgetSurplus > 0) {
       nodes.push({
-        name: `Budget Surplus\n${formatCurrency(monthlyBudgetSurplus)}`,
+        name: `Budget Surplus\n${formatCurrency(annualBudgetSurplus)}`,
         fill: "#059669" // Dark green for surplus
       });
       surplusNodeIndex = nodeIndex;
@@ -170,8 +170,8 @@ export function MoneyMap() {
         links.push({
           source: incomeIndex,
           target: budgetNodeIndex,
-          value: income.value,
-          formattedValue: formatCurrency(income.value)
+          value: income.value * 12,
+          formattedValue: formatCurrency(income.value * 12)
         });
       }
     });
@@ -181,8 +181,8 @@ export function MoneyMap() {
       links.push({
         source: deficitNodeIndex,
         target: budgetNodeIndex,
-        value: Math.abs(monthlyBudgetSurplus),
-        formattedValue: formatCurrency(Math.abs(monthlyBudgetSurplus))
+        value: Math.abs(annualBudgetSurplus),
+        formattedValue: formatCurrency(Math.abs(annualBudgetSurplus))
       });
     }
 
@@ -195,8 +195,8 @@ export function MoneyMap() {
         links.push({
           source: budgetNodeIndex,
           target: outflowNodeIndices[linkIndex],
-          value: expense.value,
-          formattedValue: formatCurrency(expense.value)
+          value: expense.value * 12,
+          formattedValue: formatCurrency(expense.value * 12)
         });
         linkIndex++;
       }
@@ -208,8 +208,8 @@ export function MoneyMap() {
         links.push({
           source: budgetNodeIndex,
           target: outflowNodeIndices[linkIndex],
-          value: asset.monthlyContribution,
-          formattedValue: formatCurrency(asset.monthlyContribution)
+          value: asset.monthlyContribution * 12,
+          formattedValue: formatCurrency(asset.monthlyContribution * 12)
         });
         linkIndex++;
       }
@@ -221,8 +221,8 @@ export function MoneyMap() {
         links.push({
           source: budgetNodeIndex,
           target: outflowNodeIndices[linkIndex],
-          value: liability.monthlyPayment,
-          formattedValue: formatCurrency(liability.monthlyPayment)
+          value: liability.monthlyPayment * 12,
+          formattedValue: formatCurrency(liability.monthlyPayment * 12)
         });
         linkIndex++;
       }
@@ -233,8 +233,8 @@ export function MoneyMap() {
       links.push({
         source: budgetNodeIndex,
         target: surplusNodeIndex,
-        value: monthlyBudgetSurplus,
-        formattedValue: formatCurrency(monthlyBudgetSurplus)
+        value: annualBudgetSurplus,
+        formattedValue: formatCurrency(annualBudgetSurplus)
       });
     }
 
@@ -250,9 +250,32 @@ export function MoneyMap() {
   const CustomNode = (props: any) => {
     const { x, y, width, height, index } = props;
     const node = sankeyData.nodes[index];
+    const nodeNumber = index + 1;
 
     return (
       <g>
+        {/* Node number label */}
+        <circle
+          cx={x + width / 2}
+          cy={y - 10}
+          r={12}
+          fill="white"
+          stroke="#374151"
+          strokeWidth={2}
+        />
+        <text
+          x={x + width / 2}
+          y={y - 10}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize={12}
+          fontWeight="bold"
+          fill="#374151"
+        >
+          {nodeNumber}
+        </text>
+
+        {/* Node rectangle */}
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -296,6 +319,19 @@ export function MoneyMap() {
     { color: "#ef4444", label: "Budget Deficit" }
   ];
 
+  // Create reference table data
+  const referenceTableData = sankeyData.nodes.map((node: any, index: number) => {
+    const nodeNumber = index + 1;
+    const [name, value] = node.name.split('\n');
+
+    return {
+      number: nodeNumber,
+      color: node.fill,
+      name,
+      value
+    };
+  });
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <Card>
@@ -308,7 +344,27 @@ export function MoneyMap() {
 
       <Card className="gap-0 flex-1 w-full">
         <CardContent>
-          <div className="mb-4">
+          <div className="mb-2">
+            <div className="flex justify-between text-sm font-medium text-gray-700">
+              <div className="flex-1 text-center">Inflows</div>
+              <div className="flex-1 text-center">Budget</div>
+              <div className="flex-1 text-center">Outflows</div>
+            </div>
+          </div>
+
+          <ResponsiveContainer
+            height={450}
+            width="100%"
+          >
+            <Sankey
+              data={sankeyData}
+              nodePadding={50}
+              node={<CustomNode />}
+              margin={{ top: 30, right: 20, bottom: 20, left: 20 }}
+            />
+          </ResponsiveContainer>
+
+          <div className="mt-4 mb-6">
             <h3 className="text-sm font-medium text-gray-700 mb-2">Color Legend:</h3>
             <div className="flex flex-wrap gap-4">
               {colorLegend.map((item, index) => (
@@ -323,24 +379,37 @@ export function MoneyMap() {
             </div>
           </div>
 
-          <div className="mb-2">
-            <div className="flex justify-between text-sm font-medium text-gray-700">
-              <div className="flex-1 text-center">Inflows</div>
-              <div className="flex-1 text-center">Budget</div>
-              <div className="flex-1 text-center">Outflows</div>
+          {/* Reference Table */}
+          <div className="mt-6">
+            <h3 className="text-sm font-medium text-gray-700 mb-3">Node Reference:</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 px-2">#</th>
+                    <th className="text-left py-2 px-2">Name</th>
+                    <th className="text-right py-2 px-2">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {referenceTableData.map((item, index) => (
+                    <tr key={index} className="border-b border-gray-100">
+                      <td className="py-2 px-2">
+                        <div
+                          className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold text-xs"
+                          style={{ backgroundColor: item.color }}
+                        >
+                          {item.number}
+                        </div>
+                      </td>
+                      <td className="py-2 px-2 font-medium">{item.name}</td>
+                      <td className="py-2 px-2 text-right font-medium">{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <ResponsiveContainer
-            height={400}
-            width="100%"
-          >
-            <Sankey
-              data={sankeyData}
-              nodePadding={50}
-              node={<CustomNode />}
-            />
-          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>
