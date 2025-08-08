@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewLiability } from "./new-liability";
+import { EditLiability } from "./edit-liability";
 import {
   Table,
   TableHeader,
@@ -48,7 +49,7 @@ function LiabilityOptions({ liabilityId }: { liabilityId: string }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* TODO: Add EditLiability component */}
+        <EditLiability liabilityId={liabilityId} onClose={() => setIsEditOpen(false)} />
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>

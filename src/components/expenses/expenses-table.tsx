@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewExpense } from "./new-expense";
+import { EditExpense } from "./edit-expense";
 import {
   Table,
   TableHeader,
@@ -48,7 +49,7 @@ function ExpenseOptions({ expenseId }: { expenseId: string }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* TODO: Add EditExpense component */}
+        <EditExpense expenseId={expenseId} onClose={() => setIsEditOpen(false)} />
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>

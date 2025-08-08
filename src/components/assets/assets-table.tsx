@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewAsset } from "./new-asset";
+import { EditAsset } from "./edit-asset";
 import {
   Table,
   TableHeader,
@@ -48,7 +49,7 @@ function AssetOptions({ assetId }: { assetId: string }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* TODO: Add EditAsset component */}
+        <EditAsset assetId={assetId} onClose={() => setIsEditOpen(false)} />
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>

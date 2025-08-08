@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewIncome } from "./new-income";
+import { EditIncome } from "./edit-income";
 import {
   Table,
   TableHeader,
@@ -48,7 +49,7 @@ function IncomeOptions({ incomeId }: { incomeId: string }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        {/* TODO: Add EditIncome component */}
+        <EditIncome incomeId={incomeId} onClose={() => setIsEditOpen(false)} />
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
