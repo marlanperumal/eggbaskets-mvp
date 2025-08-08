@@ -64,7 +64,7 @@ export function GoalsTable() {
   const goals = useStore((state) => state.goals);
 
   return (
-    <Card className="gap-0 flex-1">
+    <Card className="gap-0 flex-1 w-full">
       <CardHeader>
         <CardTitle>
           <div className="flex flex-row gap-2 items-center justify-between">
@@ -78,11 +78,11 @@ export function GoalsTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Value</TableHead>
-              <TableHead>Start Year</TableHead>
-              <TableHead>Funded</TableHead>
-              <TableHead className="text-center">
+              <TableHead className="hidden sm:table-cell">Type</TableHead>
+              <TableHead className="text-right">Value</TableHead>
+              <TableHead className="hidden md:table-cell">Start Year</TableHead>
+              <TableHead className="hidden md:table-cell">Funded</TableHead>
+              <TableHead className="text-center w-0">
                 <div className="flex justify-center">
                   <Settings className="w-4 h-4" />
                 </div>
@@ -93,10 +93,16 @@ export function GoalsTable() {
             {goals.map((goal) => (
               <TableRow key={goal.id}>
                 <TableCell>{goal.name}</TableCell>
-                <TableCell>{goal.type}</TableCell>
-                <TableCell>{goal.value}</TableCell>
-                <TableCell>{goal.startYear}</TableCell>
-                <TableCell>{goal.funded ? "Yes" : "No"}</TableCell>
+                <TableCell className="hidden sm:table-cell">{goal.type}</TableCell>
+                <TableCell className="text-right">
+                  {new Intl.NumberFormat("en-ZA", {
+                    style: "currency",
+                    currency: "ZAR",
+                    maximumFractionDigits: 0,
+                  }).format(goal.value)}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">{goal.startYear}</TableCell>
+                <TableCell className="hidden md:table-cell">{goal.funded ? "Yes" : "No"}</TableCell>
                 <TableCell className="flex justify-center">
                   <GoalOptions goalId={goal.id} />
                 </TableCell>

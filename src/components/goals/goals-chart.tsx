@@ -163,10 +163,10 @@ export function GoalsChart() {
   };
 
   return (
-    <Card className="flex-1">
+    <Card className="flex-1 min-w-0 w-full">
       <CardContent>
         {completeChartData.length > 0 ? (
-          <ResponsiveContainer width="100%" minHeight={300}>
+          <ResponsiveContainer width="100%" height={320}>
             <BarChart
               data={completeChartData}
               margin={{ left: 10, right: 20, top: 20, bottom: 40 }}

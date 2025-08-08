@@ -1,5 +1,4 @@
-import { useNavigate } from "@tanstack/react-router";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Menu, ShoppingBasket } from "lucide-react";
 
 import { AvatarFallback } from "@/components/ui/avatar";
@@ -21,7 +20,6 @@ import {
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { Route as HomeRoute } from "@/routes/index";
 import { Route as BalanceSheetRoute } from "@/routes/balance-sheet";
-import { Route as IncomeStatementRoute } from "@/routes/income-statement";
 import { Route as CashFlowRoute } from "@/routes/cash-flow";
 import { Route as GoalsRoute } from "@/routes/goals";
 import { Route as RetirementRoute } from "@/routes/retirement";
@@ -48,7 +46,7 @@ export function TopBar({ npv }: { npv: boolean }) {
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={RetirementRoute.to}>👴Retirement</Link>
+          <Link to={RetirementRoute.to}>👵 Retirement</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
@@ -58,12 +56,12 @@ export function TopBar({ npv }: { npv: boolean }) {
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={BalanceSheetRoute.to}>💰 Financial Story</Link>
+          <Link to={BalanceSheetRoute.to}>💰 Financial Plan</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={CashFlowRoute.to}>💸Money Map</Link>
+          <Link to={CashFlowRoute.to}>💸 Money Map</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </>
@@ -107,26 +105,10 @@ export function TopBar({ npv }: { npv: boolean }) {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    to={BalanceSheetRoute.to}
+                    to={RetirementRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Balance Sheet
-                  </Link>
-                </SheetClose>
-                <SheetClose asChild>
-                  <Link
-                    to={IncomeStatementRoute.to}
-                    className="block px-2 py-1 hover:bg-slate-200 rounded"
-                  >
-                    Income Statement
-                  </Link>
-                </SheetClose>
-                <SheetClose asChild>
-                  <Link
-                    to={CashFlowRoute.to}
-                    className="block px-2 py-1 hover:bg-slate-200 rounded"
-                  >
-                    Cash Flow
+                    Retirement
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -139,10 +121,18 @@ export function TopBar({ npv }: { npv: boolean }) {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    to={RetirementRoute.to}
+                    to={BalanceSheetRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Retirement
+                    Financial Plan
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    to={CashFlowRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    Money Map
                   </Link>
                 </SheetClose>
               </nav>

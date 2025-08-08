@@ -24,9 +24,13 @@ function RouteComponent() {
           </p>
         </CardContent>
       </Card>
-      <div className="flex flex-row gap-2">
-        <GoalsTable />
-        <GoalsChart />
+      <div className="flex flex-col gap-2 md:flex-row md:items-stretch">
+        <div className="md:basis-1/2 min-w-0 flex">
+          <GoalsTable />
+        </div>
+        <div className="md:basis-1/2 min-w-0 flex">
+          <GoalsChart />
+        </div>
       </div>
     </div>
   );
