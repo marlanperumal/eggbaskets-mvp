@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewAsset } from "./new-asset";
 import { EditAsset } from "./edit-asset";
+import { AssetDetails } from "./asset-details";
 import {
   Table,
   TableHeader,
@@ -53,7 +54,7 @@ function AssetOptions({ assetId }: { assetId: string }) {
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        {/* TODO: Add AssetDetails component */}
+        <AssetDetails assetId={assetId} onClose={() => setIsDetailsOpen(false)} />
       </Dialog>
     </>
   );

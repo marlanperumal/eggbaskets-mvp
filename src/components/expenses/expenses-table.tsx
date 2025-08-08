@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { NewExpense } from "./new-expense";
 import { EditExpense } from "./edit-expense";
+import { ExpenseDetails } from "./expense-details";
 import {
   Table,
   TableHeader,
@@ -53,7 +54,7 @@ function ExpenseOptions({ expenseId }: { expenseId: string }) {
       </Dialog>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        {/* TODO: Add ExpenseDetails component */}
+        <ExpenseDetails expenseId={expenseId} onClose={() => setIsDetailsOpen(false)} />
       </Dialog>
     </>
   );
