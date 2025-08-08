@@ -5,8 +5,8 @@ import { RetirementCalculatorForm } from "@/components/retirement-calculator-for
 import { RetirementResultChart } from "@/components/retirement-result-chart";
 export function RetirementCalculator() {
   return (
-    <div className="flex flex-row gap-2 w-full">
-      <Card className="flex-shrink-0">
+    <div className="flex flex-col gap-2 w-full lg:flex-row">
+      <Card className="lg:flex-shrink-0">
         <CardHeader className="-mb-2">
           <CardTitle>Retirement Calculator</CardTitle>
         </CardHeader>
@@ -29,14 +29,11 @@ export function RetirementCalculator() {
           </Tabs>
         </CardContent>
       </Card>
-      <Card className="justify-center flex-shrink-0">
+      <Card className="justify-center lg:flex-shrink-0 min-w-0 lg:basis-80 xl:basis-1/4">
         <RetirementResultCard />
       </Card>
-      <Card className="min-w-1/3 flex-1">
-        <CardHeader>
-          <CardTitle>Retirement Result Chart</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="lg:min-w-1/3 flex-1 flex flex-col">
+        <CardContent className="flex-1">
           <RetirementResultChart />
         </CardContent>
       </Card>

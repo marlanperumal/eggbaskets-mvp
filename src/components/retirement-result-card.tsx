@@ -42,7 +42,7 @@ export function RetirementResultCard() {
     (1 + interestRate / 100) / (1 + inflationRate / 100) - 1;
   const presentValue =
     (annualWithdrawal * (1 - (1 + realInterestRate) ** -numYearsRequired)) /
-      realInterestRate +
+    realInterestRate +
     lumpsumRemaining / (1 + realInterestRate) ** numYearsRequired;
   const futureValue =
     presentValue * (1 + inflationRate / 100) ** yearsTillRetirement;
@@ -85,7 +85,7 @@ export function RetirementResultCard() {
   return (
     <>
       <CardHeader className="-mb-4">
-        <CardTitle className="text-center">
+        <CardTitle className="text-center break-words hyphens-auto overflow-hidden">
           At retirement you will need{" "}
           <span className="text-lg font-bold">
             {new Intl.NumberFormat("en-ZA", {
@@ -97,9 +97,9 @@ export function RetirementResultCard() {
           to purchase a living annuity to meet your requirements
         </CardTitle>
       </CardHeader>
-      <CardContent className="text-sm">
-        <ul className="list-disc list-outside w-md pl-4">
-          <li>
+      <CardContent className="text-sm min-w-0">
+        <ul className="list-disc list-outside pl-4 space-y-2 overflow-hidden">
+          <li className="break-words hyphens-auto">
             This is the equivalent of{" "}
             <span className="text-md font-bold">
               {new Intl.NumberFormat("en-ZA", {
@@ -110,14 +110,14 @@ export function RetirementResultCard() {
             </span>{" "}
             in today's money
           </li>
-          <li>
+          <li className="break-words hyphens-auto">
             The real return on your living annuity investments after inflation
             is{" "}
             <span className="text-md font-bold">
               {interestRate - inflationRate}%
             </span>
           </li>
-          <li>
+          <li className="break-words hyphens-auto">
             Your annual drawdown must be between{" "}
             <span className="text-md font-bold">2.5%</span> and{" "}
             <span className="text-md font-bold">17.5%</span> each year. After

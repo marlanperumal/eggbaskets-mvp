@@ -38,7 +38,7 @@ function RetirementRoute() {
           </p>
         </CardContent>
       </Card>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-col gap-2 lg:flex-row">
         <RetirementCalculator />
       </div>
     </div>

@@ -115,7 +115,7 @@ export function RetirementCalculatorForm() {
           name="currentAge"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Current Age{" "}
                   <Tooltip>
@@ -156,7 +156,7 @@ export function RetirementCalculatorForm() {
           name="retirementAge"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Retirement Age{" "}
                   <Tooltip>
@@ -197,7 +197,7 @@ export function RetirementCalculatorForm() {
           name="numYearsRequired"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Number of Years Required{" "}
                   <Tooltip>
@@ -239,7 +239,7 @@ export function RetirementCalculatorForm() {
           name="monthlyWithdrawal"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Monthly Withdrawal{" "}
                   <Tooltip>
@@ -292,7 +292,7 @@ export function RetirementCalculatorForm() {
           name="interestRate"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Interest Rate{" "}
                   <Tooltip>
@@ -339,7 +339,7 @@ export function RetirementCalculatorForm() {
           name="inflationRate"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Inflation Rate{" "}
                   <Tooltip>
@@ -386,7 +386,7 @@ export function RetirementCalculatorForm() {
           name="lumpsumRemaining"
           render={({ field }) => (
             <FormItem>
-              <div className="flex flex-row gap-4 items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <FormLabel>
                   Lumpsum Remaining{" "}
                   <Tooltip>

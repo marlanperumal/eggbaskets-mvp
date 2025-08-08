@@ -62,7 +62,7 @@ export function RetirementResultChart() {
   const annuityPrincipal =
     (presentAnnualWithdrawal *
       (1 - (1 + realInterestRate) ** -numYearsRequired)) /
-      realInterestRate +
+    realInterestRate +
     lumpsumRemaining / (1 + realInterestRate) ** numYearsRequired;
   const years = Array.from(
     { length: numYearsRequired + 1 },
@@ -94,36 +94,28 @@ export function RetirementResultChart() {
   }));
 
   return (
-    <ChartContainer config={config} className="w-full">
-      <ComposedChart data={data} className="p-4">
+    <ChartContainer config={config} className="w-full h-full">
+      <ComposedChart data={data}>
         <XAxis
           dataKey="year"
           label={{
             value: "Age",
             position: "insideBottom",
-            offset: -10,
+            offset: -4,
           }}
           tickFormatter={(value) => value.toString()}
         />
         <YAxis
           yAxisId="left"
           tickFormatter={(value) =>
-            new Intl.NumberFormat("en-ZA", {
-              style: "currency",
-              currency: "ZAR",
-              maximumFractionDigits: 0,
-            }).format(value)
+            `R ${(value / 1000000).toFixed(1)}M`
           }
         />
         <YAxis
           yAxisId="right"
           orientation="right"
           tickFormatter={(value) =>
-            new Intl.NumberFormat("en-ZA", {
-              style: "currency",
-              currency: "ZAR",
-              maximumFractionDigits: 0,
-            }).format(value)
+            `R ${(value / 1000).toFixed(1)}k`
           }
         />
         <CartesianGrid />
