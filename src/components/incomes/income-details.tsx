@@ -108,7 +108,7 @@ export function IncomeDetails({ incomeId, onClose }: IncomeDetailsProps) {
                         name="value"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Annual Value (in today's money)</FormLabel>
+                                <FormLabel>Monthly Value (in today's money)</FormLabel>
                                 <div className="flex flex-row gap-2 items-center">
                                     <FormControl>
                                         <Input
