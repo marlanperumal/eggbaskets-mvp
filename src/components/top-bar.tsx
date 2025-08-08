@@ -20,7 +20,7 @@ import {
 import { NavigationMenu } from "@/components/ui/navigation-menu";
 import { Route as HomeRoute } from "@/routes/index";
 import { Route as BalanceSheetRoute } from "@/routes/balance-sheet";
-import { Route as CashFlowRoute } from "@/routes/cash-flow";
+import { Route as MoneyMapRoute } from "@/routes/money-map";
 import { Route as GoalsRoute } from "@/routes/goals";
 import { Route as RetirementRoute } from "@/routes/retirement";
 
@@ -58,12 +58,12 @@ export function TopBar({ npv }: { npv: boolean }) {
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={BalanceSheetRoute.to}>💰 Financial Plan</Link>
+          <Link to={MoneyMapRoute.to}>💸 Money Map</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={CashFlowRoute.to}>💸 Money Map</Link>
+          <Link to={BalanceSheetRoute.to}>💰 Financial Plan</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </>
@@ -102,7 +102,7 @@ export function TopBar({ npv }: { npv: boolean }) {
                     to={HomeRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Home
+                    🏠 Home
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -110,7 +110,7 @@ export function TopBar({ npv }: { npv: boolean }) {
                     to={RetirementRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Retirement
+                    👵 Retirement
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -118,7 +118,15 @@ export function TopBar({ npv }: { npv: boolean }) {
                     to={GoalsRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Goals
+                    🎯 Goals
+                  </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Link
+                    to={MoneyMapRoute.to}
+                    className="block px-2 py-1 hover:bg-slate-200 rounded"
+                  >
+                    💸 Money Map
                   </Link>
                 </SheetClose>
                 <SheetClose asChild>
@@ -126,15 +134,7 @@ export function TopBar({ npv }: { npv: boolean }) {
                     to={BalanceSheetRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
-                    Financial Plan
-                  </Link>
-                </SheetClose>
-                <SheetClose asChild>
-                  <Link
-                    to={CashFlowRoute.to}
-                    className="block px-2 py-1 hover:bg-slate-200 rounded"
-                  >
-                    Money Map
+                    💰 Financial Plan
                   </Link>
                 </SheetClose>
               </nav>
