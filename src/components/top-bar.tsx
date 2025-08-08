@@ -68,7 +68,7 @@ export function TopBar({ npv }: { npv: boolean }) {
   );
 
   return (
-    <header className="bg-slate-300">
+    <header className="bg-slate-300 sticky top-0 z-50">
       <div className="p-2 flex flex-row justify-between items-center">
         <div className="flex flex-row gap-2 items-center">
           <ShoppingBasket className="w-8 h-8" />
