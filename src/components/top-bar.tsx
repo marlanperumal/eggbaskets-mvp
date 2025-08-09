@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, ShoppingBasket } from "lucide-react";
+import { Menu, ShoppingBasket, Trash2 } from "lucide-react";
 
 import { AvatarFallback } from "@/components/ui/avatar";
 import { Avatar } from "@/components/ui/avatar";
@@ -18,14 +18,27 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Route as HomeRoute } from "@/routes/index";
-import { Route as BalanceSheetRoute } from "@/routes/balance-sheet";
+import { Route as FinancialPlanRoute } from "@/routes/financial-plan";
 import { Route as MoneyMapRoute } from "@/routes/money-map";
 import { Route as GoalsRoute } from "@/routes/goals";
 import { Route as RetirementRoute } from "@/routes/retirement";
+import { useStore } from "@/store";
 
 export function TopBar({ npv }: { npv: boolean }) {
   const navigate = useNavigate();
+  const resetStore = useStore((state) => state.resetStore);
 
   const handleNpvChange = (checked: boolean) => {
     navigate({
@@ -37,6 +50,10 @@ export function TopBar({ npv }: { npv: boolean }) {
       replace: true,
       resetScroll: false,
     });
+  };
+
+  const handleClearAll = () => {
+    resetStore();
   };
 
   const NavigationItems = () => (
@@ -63,7 +80,7 @@ export function TopBar({ npv }: { npv: boolean }) {
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <Link to={BalanceSheetRoute.to}>💰 Financial Plan</Link>
+          <Link to={FinancialPlanRoute.to}>💰 Financial Plan</Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </>
@@ -86,6 +103,30 @@ export function TopBar({ npv }: { npv: boolean }) {
             checked={npv}
             onCheckedChange={handleNpvChange}
           />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline" size="sm" className="hidden sm:flex">
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Clear All Data</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will reset all your financial data to default values.
+                  This action cannot be undone. The Current Account will be
+                  preserved but reset to $0.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleClearAll}>
+                  Clear All
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Avatar>
             <AvatarFallback>MP</AvatarFallback>
           </Avatar>
@@ -131,12 +172,38 @@ export function TopBar({ npv }: { npv: boolean }) {
                 </SheetClose>
                 <SheetClose asChild>
                   <Link
-                    to={BalanceSheetRoute.to}
+                    to={FinancialPlanRoute.to}
                     className="block px-2 py-1 hover:bg-slate-200 rounded"
                   >
                     💰 Financial Plan
                   </Link>
                 </SheetClose>
+                <div className="border-t pt-4">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Clear All
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Clear All Data</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will reset all your financial data to default
+                          values. This action cannot be undone. The Current
+                          Account will be preserved but reset to $0.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleClearAll}>
+                          Clear All
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

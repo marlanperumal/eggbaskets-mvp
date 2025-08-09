@@ -15,7 +15,7 @@ import { Route as RetirementImport } from './routes/retirement'
 import { Route as MoneyMapImport } from './routes/money-map'
 import { Route as IncomeStatementImport } from './routes/income-statement'
 import { Route as GoalsImport } from './routes/goals'
-import { Route as BalanceSheetImport } from './routes/balance-sheet'
+import { Route as FinancialPlanImport } from './routes/financial-plan'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
@@ -44,9 +44,9 @@ const GoalsRoute = GoalsImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const BalanceSheetRoute = BalanceSheetImport.update({
-  id: '/balance-sheet',
-  path: '/balance-sheet',
+const FinancialPlanRoute = FinancialPlanImport.update({
+  id: '/financial-plan',
+  path: '/financial-plan',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,11 +67,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/balance-sheet': {
-      id: '/balance-sheet'
-      path: '/balance-sheet'
-      fullPath: '/balance-sheet'
-      preLoaderRoute: typeof BalanceSheetImport
+    '/financial-plan': {
+      id: '/financial-plan'
+      path: '/financial-plan'
+      fullPath: '/financial-plan'
+      preLoaderRoute: typeof FinancialPlanImport
       parentRoute: typeof rootRoute
     }
     '/goals': {
@@ -109,7 +109,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/balance-sheet': typeof BalanceSheetRoute
+  '/financial-plan': typeof FinancialPlanRoute
   '/goals': typeof GoalsRoute
   '/income-statement': typeof IncomeStatementRoute
   '/money-map': typeof MoneyMapRoute
@@ -118,7 +118,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/balance-sheet': typeof BalanceSheetRoute
+  '/financial-plan': typeof FinancialPlanRoute
   '/goals': typeof GoalsRoute
   '/income-statement': typeof IncomeStatementRoute
   '/money-map': typeof MoneyMapRoute
@@ -128,7 +128,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/balance-sheet': typeof BalanceSheetRoute
+  '/financial-plan': typeof FinancialPlanRoute
   '/goals': typeof GoalsRoute
   '/income-statement': typeof IncomeStatementRoute
   '/money-map': typeof MoneyMapRoute
@@ -139,7 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/balance-sheet'
+    | '/financial-plan'
     | '/goals'
     | '/income-statement'
     | '/money-map'
@@ -147,7 +147,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/balance-sheet'
+    | '/financial-plan'
     | '/goals'
     | '/income-statement'
     | '/money-map'
@@ -155,7 +155,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/balance-sheet'
+    | '/financial-plan'
     | '/goals'
     | '/income-statement'
     | '/money-map'
@@ -165,7 +165,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BalanceSheetRoute: typeof BalanceSheetRoute
+  FinancialPlanRoute: typeof FinancialPlanRoute
   GoalsRoute: typeof GoalsRoute
   IncomeStatementRoute: typeof IncomeStatementRoute
   MoneyMapRoute: typeof MoneyMapRoute
@@ -174,7 +174,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BalanceSheetRoute: BalanceSheetRoute,
+  FinancialPlanRoute: FinancialPlanRoute,
   GoalsRoute: GoalsRoute,
   IncomeStatementRoute: IncomeStatementRoute,
   MoneyMapRoute: MoneyMapRoute,
@@ -192,7 +192,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/balance-sheet",
+        "/financial-plan",
         "/goals",
         "/income-statement",
         "/money-map",
@@ -202,8 +202,8 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/balance-sheet": {
-      "filePath": "balance-sheet.tsx"
+    "/financial-plan": {
+      "filePath": "financial-plan.tsx"
     },
     "/goals": {
       "filePath": "goals.tsx"

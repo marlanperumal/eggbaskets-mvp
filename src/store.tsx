@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+// Constants
+export const CURRENT_ACCOUNT_ID = "current-account";
+
 type Goal = {
   id: string;
   name: string;
@@ -12,7 +15,6 @@ type Goal = {
   numOccurrences: number;
   funded: boolean;
 };
-
 
 type GoalStoreState = {
   goals: Goal[];
@@ -35,7 +37,7 @@ type Income = {
   startYear: number;
   endYear: number;
   annualGrowthRate: number;
-}
+};
 
 type IncomeStoreState = {
   incomes: Income[];
@@ -58,7 +60,7 @@ type Expense = {
   startYear: number;
   endYear: number;
   annualGrowthRate: number;
-}
+};
 
 type ExpenseStoreState = {
   expenses: Expense[];
@@ -76,14 +78,20 @@ type ExpenseStore = ExpenseStoreState & ExpenseStoreActions;
 type Asset = {
   id: string;
   name: string;
-  type: "Fixed Appreciating" | "Fixed Depreciating" | "Investment" | "Retirement Savings" | "Other";
+  type:
+    | "Cash"
+    | "Fixed Appreciating"
+    | "Fixed Depreciating"
+    | "Investment"
+    | "Retirement Savings"
+    | "Other";
   description: string;
   value: number;
   startYear: number;
   endYear: number;
   monthlyContribution: number;
   annualGrowthRate: number;
-}
+};
 
 type AssetStoreState = {
   assets: Asset[];
@@ -108,7 +116,7 @@ type Liability = {
   termInMonths: number;
   interestRate: number;
   monthlyPayment: number;
-}
+};
 
 type LiabilityStoreState = {
   liabilities: Liability[];
@@ -123,7 +131,13 @@ type LiabilityStoreActions = {
 
 type LiabilityStore = LiabilityStoreState & LiabilityStoreActions;
 
-type Store = GoalStore & IncomeStore & ExpenseStore & AssetStore & LiabilityStore;
+type Store = GoalStore &
+  IncomeStore &
+  ExpenseStore &
+  AssetStore &
+  LiabilityStore & {
+    resetStore: () => void;
+  };
 
 export const useStore = create<Store>()(
   persist(
@@ -131,7 +145,19 @@ export const useStore = create<Store>()(
       goals: [],
       incomes: [],
       expenses: [],
-      assets: [],
+      assets: [
+        {
+          id: CURRENT_ACCOUNT_ID,
+          name: "Current Account",
+          type: "Cash",
+          description: "Your current cash balance",
+          value: 0,
+          startYear: new Date().getFullYear(),
+          endYear: new Date().getFullYear() + 50,
+          monthlyContribution: 0,
+          annualGrowthRate: 0,
+        },
+      ],
       liabilities: [],
       setGoals: (goals: Goal[]) => set({ goals }),
       addGoal: (goal: Goal) =>
@@ -155,23 +181,97 @@ export const useStore = create<Store>()(
       addExpense: (expense: Expense) =>
         set((state) => ({ expenses: [...state.expenses, expense] })),
       updateExpense: (expense: Expense) =>
-        set((state) => ({ expenses: state.expenses.map((e) => (e.id === expense.id ? expense : e)) })),
+        set((state) => ({
+          expenses: state.expenses.map((e) =>
+            e.id === expense.id ? expense : e
+          ),
+        })),
       deleteExpense: (id: string) =>
-        set((state) => ({ expenses: state.expenses.filter((e) => e.id !== id) })),
-      setAssets: (assets: Asset[]) => set({ assets }),
+        set((state) => ({
+          expenses: state.expenses.filter((e) => e.id !== id),
+        })),
+      setAssets: (assets: Asset[]) => {
+        // Ensure Current Account is always present
+        const currentAccount = assets.find(
+          (asset) => asset.id === CURRENT_ACCOUNT_ID
+        );
+        const otherAssets = assets.filter(
+          (asset) => asset.id !== CURRENT_ACCOUNT_ID
+        );
+
+        const defaultCurrentAccount: Asset = {
+          id: CURRENT_ACCOUNT_ID,
+          name: "Current Account",
+          type: "Cash",
+          description: "Your current cash balance",
+          value: currentAccount?.value ?? 0,
+          startYear: new Date().getFullYear(),
+          endYear: new Date().getFullYear() + 50,
+          monthlyContribution: 0,
+          annualGrowthRate: 0,
+        };
+
+        set({ assets: [defaultCurrentAccount, ...otherAssets] });
+      },
       addAsset: (asset: Asset) =>
         set((state) => ({ assets: [...state.assets, asset] })),
       updateAsset: (asset: Asset) =>
-        set((state) => ({ assets: state.assets.map((a) => (a.id === asset.id ? asset : a)) })),
+        set((state) => {
+          // If this is the Current Account, only allow value changes
+          if (asset.id === CURRENT_ACCOUNT_ID) {
+            return {
+              assets: state.assets.map((a) =>
+                a.id === asset.id ? { ...a, value: asset.value } : a
+              ),
+            };
+          }
+
+          // For other assets, allow full updates
+          return {
+            assets: state.assets.map((a) => (a.id === asset.id ? asset : a)),
+          };
+        }),
       deleteAsset: (id: string) =>
-        set((state) => ({ assets: state.assets.filter((a) => a.id !== id) })),
+        set((state) => {
+          // Prevent deletion of Current Account
+          if (id === CURRENT_ACCOUNT_ID) {
+            return state;
+          }
+          return { assets: state.assets.filter((a) => a.id !== id) };
+        }),
       setLiabilities: (liabilities: Liability[]) => set({ liabilities }),
       addLiability: (liability: Liability) =>
         set((state) => ({ liabilities: [...state.liabilities, liability] })),
       updateLiability: (liability: Liability) =>
-        set((state) => ({ liabilities: state.liabilities.map((l) => (l.id === liability.id ? liability : l)) })),
+        set((state) => ({
+          liabilities: state.liabilities.map((l) =>
+            l.id === liability.id ? liability : l
+          ),
+        })),
       deleteLiability: (id: string) =>
-        set((state) => ({ liabilities: state.liabilities.filter((l) => l.id !== id) })),
+        set((state) => ({
+          liabilities: state.liabilities.filter((l) => l.id !== id),
+        })),
+      resetStore: () =>
+        set({
+          goals: [],
+          incomes: [],
+          expenses: [],
+          assets: [
+            {
+              id: CURRENT_ACCOUNT_ID,
+              name: "Current Account",
+              type: "Cash",
+              description: "Your current cash balance",
+              value: 0,
+              startYear: new Date().getFullYear(),
+              endYear: new Date().getFullYear() + 50,
+              monthlyContribution: 0,
+              annualGrowthRate: 0,
+            },
+          ],
+          liabilities: [],
+        }),
     }),
     {
       name: "eggbaskets-store",
