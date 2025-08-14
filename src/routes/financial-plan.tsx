@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NetWorthChart } from "@/components/net-worth-chart";
+import { FinancialPlanSimulation } from "@/components/financial-plan/financial-plan-simulation";
 
 export const Route = createFileRoute("/financial-plan")({
   component: RouteComponent,
@@ -7,5 +8,10 @@ export const Route = createFileRoute("/financial-plan")({
 
 function RouteComponent() {
   const { npv = true } = Route.useSearch();
-  return <NetWorthChart npv={npv} />;
+  return (
+    <div className="flex flex-col gap-4 p-4">
+      <FinancialPlanSimulation />
+      <NetWorthChart npv={npv} />
+    </div>
+  );
 }

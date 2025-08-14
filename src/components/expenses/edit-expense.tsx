@@ -164,7 +164,7 @@ export function EditExpense({ expenseId, onClose }: EditExpenseProps) {
                         name="annualGrowthRate"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Annual Growth Rate (%)</FormLabel>
+                                <FormLabel>Annual Growth Rate (%) above inflation</FormLabel>
                                 <div className="flex flex-row gap-2 items-center">
                                     <FormControl>
                                         <Input

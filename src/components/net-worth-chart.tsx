@@ -35,6 +35,9 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
   });
 
   // Generate colors for individual series
+  // Assets: Green/blue tones (positive values)
+  // Liabilities: Red/orange tones (negative values) 
+  // Goals: Yellow/green tones (expenses)
   const generateColors = (count: number, baseHue: number) => {
     return Array.from({ length: count }, (_, i) => {
       const hue = (baseHue + i * 30) % 360;
@@ -46,7 +49,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
     assets.filter((a) => a.id !== "current-account").length,
     217
   );
-  const liabilityColors = generateColors(liabilities.length, 0);
+  const liabilityColors = generateColors(liabilities.length, 0); // Red/orange tones for liabilities
   const goalColors = generateColors(goals.length, 120);
 
   // Create dynamic config for individual series
@@ -72,7 +75,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
     // Add individual liabilities (negative values)
     liabilities.forEach((liability, index) => {
       config[`liability_${liability.id}`] = {
-        label: liability.name,
+        label: `${liability.name} (Liability)`,
         color: liabilityColors[index],
       };
     });
@@ -114,8 +117,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
         return (
           sum +
           income.value *
-            12 *
-            Math.pow(1 + income.annualGrowthRate / 100, yearsOfGrowth)
+          12 *
+          Math.pow(1 + income.annualGrowthRate / 100, yearsOfGrowth)
         );
       }
       return sum;
@@ -130,8 +133,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
         return (
           sum +
           expense.value *
-            12 *
-            Math.pow(1 + expense.annualGrowthRate / 100, yearsOfGrowth)
+          12 *
+          Math.pow(1 + expense.annualGrowthRate / 100, yearsOfGrowth)
         );
       }
       return sum;
@@ -180,8 +183,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
           return (
             sum +
             income.value *
-              12 *
-              Math.pow(1 + income.annualGrowthRate / 100, yearsOfGrowth)
+            12 *
+            Math.pow(1 + income.annualGrowthRate / 100, yearsOfGrowth)
           );
         }
         return sum;
@@ -196,8 +199,8 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
           return (
             sum +
             expense.value *
-              12 *
-              Math.pow(1 + expense.annualGrowthRate / 100, yearsOfGrowth)
+            12 *
+            Math.pow(1 + expense.annualGrowthRate / 100, yearsOfGrowth)
           );
         }
         return sum;
@@ -231,24 +234,6 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
         yearLiabilityPayments;
     }
 
-    // Add converted assets from previous years
-    let convertedAssetsValue = 0;
-    for (let y = startYear; y < year; y++) {
-      assets.forEach((asset) => {
-        if (asset.startYear <= y && asset.endYear && y > asset.endYear) {
-          const endYearValue =
-            asset.value *
-            Math.pow(
-              1 + asset.annualGrowthRate / 100,
-              asset.endYear - asset.startYear
-            );
-          const contributionsToEnd =
-            asset.monthlyContribution * 12 * (asset.endYear - asset.startYear);
-          convertedAssetsValue += endYearValue + contributionsToEnd;
-        }
-      });
-    }
-
     // Subtract goals from previous years
     let previousGoalsValue = 0;
     for (let y = startYear; y < year; y++) {
@@ -261,14 +246,15 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
 
     currentAccountValue =
       initialCurrentAccount +
-      cumulativeBudgetSurplus +
-      convertedAssetsValue -
+      cumulativeBudgetSurplus -
       previousGoalsValue;
 
     // Add budget surplus/deficit to current account for this year
     currentAccountValue += budgetSurplus;
 
     // Process each asset
+    // Assets that have reached their end year are converted to cash and added to current account
+    // Active assets continue to grow and contribute to total assets
     assets.forEach((asset) => {
       if (asset.startYear <= year) {
         const yearsOfInterest = year - asset.startYear;
@@ -285,7 +271,26 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
           const contributionsToEnd =
             asset.monthlyContribution * 12 * (asset.endYear - asset.startYear);
           assetValue = endYearValue + contributionsToEnd;
+
+          // Add the converted asset value to current account for this year
+          // This represents the cash that was converted from the asset
           currentAccountValue += assetValue;
+
+          // Debug logging for asset conversion
+          if (year === 2026) { // Only log for a specific year to avoid spam
+            console.log(`Asset ${asset.name} converted to cash:`, {
+              asset: asset.name,
+              year,
+              endYear: asset.endYear,
+              endYearValue,
+              contributionsToEnd,
+              assetValue,
+              currentAccountValue
+            });
+          }
+
+          // Don't add to totalAssets since it's now cash
+          // Don't set dataPoint since it's converted to cash
         } else if (asset.endYear === undefined || asset.endYear >= year) {
           // Asset is still active
           const principalWithInterest =
@@ -296,10 +301,10 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
             ? asset.annualGrowthRate === 0
               ? asset.monthlyContribution * 12 * yearsOfInterest
               : asset.monthlyContribution *
-                12 *
-                ((Math.pow(1 + asset.annualGrowthRate / 100, yearsOfInterest) -
-                  1) /
-                  (asset.annualGrowthRate / 100))
+              12 *
+              ((Math.pow(1 + asset.annualGrowthRate / 100, yearsOfInterest) -
+                1) /
+                (asset.annualGrowthRate / 100))
             : 0;
 
           assetValue = principalWithInterest + annualContributionWithInterest;
@@ -308,6 +313,23 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
         }
       }
     });
+
+    // After processing all assets, add the current account value to total assets
+    // This includes the initial value, budget surplus/deficit, and any converted assets
+    totalAssets += currentAccountValue;
+    dataPoint.asset_current_account = currentAccountValue;
+
+    // Debug logging for current account
+    if (year === 2026) { // Only log for a specific year to avoid spam
+      console.log(`Current account calculation for year ${year}:`, {
+        initialCurrentAccount,
+        cumulativeBudgetSurplus,
+        previousGoalsValue,
+        budgetSurplus,
+        currentAccountValue,
+        totalAssets
+      });
+    }
 
     // Process each liability
     liabilities.forEach((liability) => {
@@ -336,8 +358,10 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
         }
 
         liabilityValue = principalWithInterest - totalPayments;
-        totalLiabilities += liabilityValue;
-        dataPoint[`liability_${liability.id}`] = -liabilityValue; // Negative for display
+        // Ensure liability is always negative for net worth calculation
+        const negativeLiabilityValue = -Math.abs(liabilityValue);
+        totalLiabilities += negativeLiabilityValue;
+        dataPoint[`liability_${liability.id}`] = negativeLiabilityValue; // Negative for display
       }
     });
 
@@ -360,12 +384,13 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
       }
     });
 
-    // Add current account value to total assets
-    totalAssets += currentAccountValue;
-    dataPoint.asset_current_account = currentAccountValue;
-
-    // Calculate net worth
-    const netWorth = totalAssets + totalLiabilities;
+    // Calculate net worth (assets minus liabilities)
+    // totalAssets includes:
+    // - Active assets (growing with interest and contributions)
+    // - Current account (initial value + budget surplus/deficit + converted assets)
+    // totalLiabilities includes all negative liability values
+    // So netWorth = totalAssets + totalLiabilities = totalAssets - |totalLiabilities|
+    const netWorth = totalAssets + totalLiabilities; // totalLiabilities is already negative
     dataPoint.netWorth = netWorth;
 
     // Apply NPV factor
@@ -390,7 +415,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
   return (
     <Card className="flex-1">
       <CardHeader>
-        <CardTitle>Net Worth</CardTitle>
+        <CardTitle>Net Worth (Assets - Liabilities)</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={config} className="w-full">
@@ -403,7 +428,15 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
               ticks={ticks}
               domain={[startYear, startYear + numPeriods]}
             />
-            <YAxis />
+            <YAxis
+              tickFormatter={(value) =>
+                new Intl.NumberFormat("en-ZA", {
+                  style: "currency",
+                  currency: "ZAR",
+                  maximumFractionDigits: 0,
+                }).format(value)
+              }
+            />
             <CartesianGrid />
             <Tooltip
               formatter={(value: any, name: string) => [
@@ -448,6 +481,7 @@ export function NetWorthChart({ npv = true }: { npv?: boolean }) {
                 stroke={liabilityColors[index]}
                 isAnimationActive={false}
                 stackId="liabilities"
+                fillOpacity={0.8}
               />
             ))}
 
